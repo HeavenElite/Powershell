@@ -1,4 +1,4 @@
-﻿$Computers = Import-Csv .\ITLabSecure.csv
+﻿$Computers = Import-Csv .\ITLabData.csv
 for ( $i = 0; $i -lt $Computers.Length; $i++) {
 
     $Username   = $Computers[$i].Account
