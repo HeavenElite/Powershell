@@ -1,4 +1,4 @@
-param (
+﻿param (
     [CmdLetBinding()]
     [Parameter(Mandatory)]
     [String]$Name,
@@ -21,17 +21,10 @@ for ($i=0; $i -lt $Result.Length/2; $i++) {
         CurrentResult  = $Result.InputObject[$i]
         PreviousResult = $Result.InputObject[$i + $Result.Length/2]
     }
+
+
     [PSCustomObject]$Report | Select-Object -Property PreviousResult,CurrentResult | Format-Table -AutoSize
     [PSCustomObject]$Report | Select-Object -Property PreviousResult,CurrentResult | Export-Csv -Path "..\Analyze\$($Name)Analyze-$((Get-Date).ToString('yyyy.MM.dd')).csv" -Append -NoTypeInformation
 }
 
 Set-Location -Path ..
-
-# Ping
-# BackupCheck
-# SoftwareEPSCheck
-# SoftwareLPECheck
-# SoftwareWinSCPCheck
-
-
-
