@@ -21,7 +21,7 @@ for ( $i = 0; $i -lt $Computers.Length; $i++) {
         }
 
         [PSCustomObject]$Report | Select-Object -Property Computer,PartNum,PartSize,UsedSize,FreeSize | Where-Object {$_.FreeSize -ne '0'} | Format-Table -AutoSize
-        [PSCustomObject]$Report | Select-Object -Property Computer,PartNum,PartSize,UsedSize,FreeSize | Where-Object {$_.FreeSize -ne '0'} | Export-Csv -Path ".\DiskInfo-$(Get-Date -Format "yyyy.MM.dd").csv" -Append -NoTypeInformation
+        [PSCustomObject]$Report | Select-Object -Property Computer,PartNum,PartSize,UsedSize,FreeSize | Where-Object {$_.FreeSize -ne '0'} | Export-Csv -Path ".\DiskInfoReport-$(Get-Date -Format "yyyy.MM.dd").csv" -Append -NoTypeInformation
     }
 }
 [System.Console]::Beep(1000,1000)
