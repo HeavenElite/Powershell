@@ -54,7 +54,7 @@ if ($Name -match 'BackupCheck') {
             CurBackupLocation   =  $Data.CurBackupLocation[$i]
         }
 
-        [PSCustomObject]$Report | Select-Object -Property PreComputer,PreBackupItem,PreOldestVersion,PreLatestVersion,PreVersionNumber,PreBackupLocation,CurComputer,CurBackupItem,CurOldestVersion,CurLatestVersion,CurVersionNumber,CurBackupLocation | Export-Csv $ForPath -Append -NoTypeInformation
+        [PSCustomObject]$Report | Select-Object -Property PreComputer,CurComputer,PreBackupItem,CurBackupItem,PreOldestVersion,CurOldestVersion,PreLatestVersion,CurLatestVersion,PreVersionNumber,CurVersionNumber,PreBackupLocation,CurBackupLocation | Export-Csv $ForPath -Append -NoTypeInformation
         
     }
 
@@ -83,7 +83,7 @@ elseif ($Name -match 'Ping') {
             CurResult   =  $Data.CurResult[$i]
         }
 
-        [PSCustomObject]$Report | Select-Object -Property PreNo,PreServer,PreService,PrePort,PreResult,CurNo,CurServer,CurService,CurPort,CurResult | Export-Csv $ForPath -Append -NoTypeInformation
+        [PSCustomObject]$Report | Select-Object -Property PreNo,CurNo,PreServer,CurServer,PreService,CurService,PrePort,CurPort,PreResult,CurResult | Export-Csv $ForPath -Append -NoTypeInformation
     }
     (Get-Content $ForPath) -replace ',',"`t" | Set-Content $ForPath
 
@@ -104,7 +104,7 @@ elseif ($Name -match 'SoftwareEPSCheck') {
             CurResult   = $Data.CurResult[$i]
         }
 
-        [PSCustomObject]$Report | Select-Object -Property PreComputer,PreResult,CurComputer,CurResult | Export-Csv $ForPath -Append -NoTypeInformation
+        [PSCustomObject]$Report | Select-Object -Property PreComputer,CurComputer,PreResult,CurResult | Export-Csv $ForPath -Append -NoTypeInformation
     }
     (Get-Content $ForPath) -replace ',',"`t" | Set-Content $ForPath
 
@@ -137,7 +137,7 @@ elseif ($Name -match 'SoftwareLPECheck' -or 'SoftwareWinSCPCheck') {
             CurVersion    =  $Data.CurVersion[$i]
         }
 
-        [PSCustomObject]$Report | Select-Object -Property PreComputer,PreProcessor,PreOSName,PreOSArck,PreSoftware,PreSoftArck,PreVersion,CurComputer,CurProcessor,CurOSName,CurOSArck,CurSoftware,CurSoftArck,CurVersion | Export-Csv $ForPath -Append -NoTypeInformation
+        [PSCustomObject]$Report | Select-Object -Property PreComputer,CurComputer,PreProcessor,CurProcessor,PreOSName,CurOSName,PreOSArck,CurOSArck,PreSoftware,CurSoftware,PreSoftArck,CurSoftArck,PreVersion,CurVersion | Export-Csv $ForPath -Append -NoTypeInformation
     }
 
     (Get-Content $ForPath) -replace ',',"`t" | Set-Content $ForPath
