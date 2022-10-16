@@ -59,7 +59,7 @@ for ( $i = 0; $i -lt $Computers.Length; $i++) {
     }
     finally {
         [PSCustomObject]$Report | Select-Object -Property Computer,BackupItem,OldestVersion,LatestVersion,VersionNumber,BackupLocation | Format-Table -AutoSize
-        [PSCustomObject]$Report | Select-Object -Property Computer,BackupItem,OldestVersion,LatestVersion,VersionNumber,BackupLocation | Export-Csv -Path ".\BackupCheckReport-$(Get-Date -Format "yyyy.MM.dd").txt" -Append -NoTypeInformation
+        [PSCustomObject]$Report | Select-Object -Property Computer,BackupItem,OldestVersion,LatestVersion,VersionNumber,BackupLocation | Export-Csv -Path ".\BackupCheckReport-$(Get-Date -Format "yyyy.MM.dd").csv" -Append -NoTypeInformation
     }
 
 }
