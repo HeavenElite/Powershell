@@ -1,4 +1,4 @@
-﻿param (
+param (
     [CmdLetBinding()]
     [Parameter(Mandatory)]
     [String]$Name,
