@@ -16,6 +16,12 @@ Write-Output "The Current File: $($Name)Report-$((Get-Date).AddDays($Current).To
 
 $Result = Compare-Object (Get-Content ".\$($Name)Report-$((Get-Date).AddDays($Previous).ToString('yyyy.MM.dd')).csv") (Get-Content ".\$($Name)Report-$((Get-Date).AddDays($Current).ToString('yyyy.MM.dd')).csv")
 
+if ( $null -eq $Result) {
+
+    Write-Output "There is no change in the file today!"
+    Exit
+}
+
 for ($i=0; $i -lt $Result.Length/2; $i++) {
     $Report = @{
         CurrentResult  = $Result.InputObject[$i]
