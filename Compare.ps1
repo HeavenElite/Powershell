@@ -8,7 +8,17 @@
     [Int32]$Current
 )
 
-Get-ChildItem . | Where-Object {$_.Name -like '*Report*.csv'} | Move-Item -Destination .\Report\
+try {
+    Get-ChildItem . | Where-Object {$_.Name -like '*Report*.csv'} | Move-Item -Destination .\Report\
+}
+catch{
+    Write-Output "There are no reports required to be removed. `n"
+}
+finally {
+    Write-Output "Reports are now removed. `n"
+}
+
+
 Set-Location -Path .\Report
 
 Write-Output ''
