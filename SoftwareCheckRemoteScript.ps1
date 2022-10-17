@@ -5,18 +5,35 @@ if ($Env:PROCESSOR_ARCHITECTURE -match '86') {
 
     $Response = Get-ChildItem -Path 'HKLM:\SOFTWARE\Microsoft\Windows\CurrentVersion\Uninstall\' | Get-ItemProperty | Select-Object -Property DisplayName,DisplayVersion | Where-Object {$_.Displayname -like "*$Software*"}
 
-    $Result = @{
-        Computer     = $IPAddress
-        Processor    = $Env:PROCESSOR_ARCHITECTURE
-        OSName       = [System.Environment]::OSVersion.VersionString
-        OSArck       = (wmic os get osarchitecture)[2]
-        Software     = $Response.DisplayName
-        SoftArck     = '32-Bit'
-        Version      = $Response.DisplayVersion
+    if ($null -ne $Response) {
+
+        $Result = @{
+            Computer     = $IPAddress
+            Processor    = $Env:PROCESSOR_ARCHITECTURE
+            OSName       = [System.Environment]::OSVersion.VersionString
+            OSArck       = (wmic os get osarchitecture)[2]
+            Software     = $Response.DisplayName
+            SoftArck     = '32-Bit'
+            Version      = $Response.DisplayVersion
+        }
+        
+        [PSCustomObject]$Result
     }
 
-    [PSCustomObject]$Result
+    else {
 
+        $Result = @{
+            Computer     = $IPAddress
+            Processor    = $Env:PROCESSOR_ARCHITECTURE
+            OSName       = [System.Environment]::OSVersion.VersionString
+            OSArck       = (wmic os get osarchitecture)[2]
+            Software     = "NotInstalled"
+            SoftArck     = "NotInstalled"
+            Version      = "NotInstalled"
+        }
+
+        [PSCustomObject]$Result
+    }    
 }
 elseif ($Env:PROCESSOR_ARCHITECTURE -match '64') {
 
@@ -63,9 +80,9 @@ elseif ($Env:PROCESSOR_ARCHITECTURE -match '64') {
                 Processor    = $Env:PROCESSOR_ARCHITECTURE
                 OSName       = [System.Environment]::OSVersion.VersionString
                 OSArck       = (wmic os get osarchitecture)[2]
-                Software     = "$SoftwareNotInstalled"
-                SoftArck     = "$SoftwareNotInstalled"
-                Version      = "$SoftwareNotInstalled"
+                Software     = "NotInstalled"
+                SoftArck     = "NotInstalled"
+                Version      = "NotInstalled"
             }
 
             [PSCustomObject]$Result
