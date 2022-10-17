@@ -19,6 +19,7 @@ $Result = Compare-Object (Get-Content ".\$($Name)Report-$((Get-Date).AddDays($Pr
 if ( $null -eq $Result) {
 
     Write-Output "There is no change in the file today!"
+    Set-Location -Path ..
     Exit
 }
 
@@ -39,8 +40,7 @@ $ForPath = ".\Analyze\$($Name)Analyze-$((Get-Date).ToString('yyyy.MM.dd')).Forma
 
 if ($Name -match 'BackupCheck') {
    
-    (Get-Content $OriPath) -replace '^"""|"""$','"' -replace '""','"'  -replace '","',"`t" -replace '可以恢复: 卷， 文件， 应用程序， 裸机恢复， 系统状态|备份时间: |新加卷|本地磁盘','' -replace '备份目标: 1394/USB 磁盘，标签为 ','1394/USB' -replace '备份目标: 固定磁盘，标签为 ','LocalDisk' | Set-Content $OriPath
-    (Get-Content $OriPath) -replace "`t",',' -replace ',",',',"",' | Set-Content $OriPath
+    (Get-Content $OriPath) -replace '^"""|"""$','"' -replace '""','"' -replace '可以恢复: 卷， 文件， 应用程序， 裸机恢复， 系统状态','Barebone' -replace '备份时间: |新加卷|本地磁盘','' -replace '备份目标: 1394/USB 磁盘，标签为 ','1394/USB' -replace '备份目标: 固定磁盘，标签为 ','LocalDisk' -replace '""','"' | Set-Content $OriPath
 
     $Data = Import-Csv $OriPath -Header PreComputer,PreBackupItem,PreOldestVersion,PreLatestVersion,PreVersionNumber,PreBackupLocation,CurComputer,CurBackupItem,CurOldestVersion,CurLatestVersion,CurVersionNumber,CurBackupLocation 
 
