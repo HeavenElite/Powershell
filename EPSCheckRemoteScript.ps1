@@ -5,5 +5,5 @@ if (Test-Path -Path C:\Users\$env:UserName\AppData\Roaming\Shell\EPS\uninstall.e
     (Select-String -Path $FileList[-1] 'eps version' | Select-Object -ExpandProperty Line)[-1].Substring(36,10)
 }
 else {
-    Write-Output 'EPS NotInstalled'
+    Write-Output 'NotInstalled'
 }
