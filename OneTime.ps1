@@ -51,10 +51,10 @@ function SoftwareCheck {
     [CmdletBinding()]
     param(
         [Parameter(Mandatory)]
-        [String]$Software
+        [String]$Name
     )
 
-    $Result   = Invoke-Command -ComputerName $IPAddress -Credential $Credential -FilePath .\SoftwareCheckRemoteScript.ps1 -ArgumentList $Software,$IPAddress
+    $Result   = Invoke-Command -ComputerName $IPAddress -Credential $Credential -FilePath .\SoftwareCheckRemoteScript.ps1 -ArgumentList $Name,$IPAddress
 
     [PSCustomObject]$Result | Select-Object -Property Computer,Processor,OSName,OSArck,Software,SoftArck,Version | Format-Table -AutoSize
 }
@@ -104,8 +104,25 @@ function Ping {
     )
     Test-NetConnection -ComputerName $IPAddress -Port $Port
 }
+function RDPRecord {
+
+    $Data = Invoke-Command -ComputerName $IPAddress -Credential $Credential -ScriptBlock {Get-WinEvent -LogName 'Microsoft-Windows-TerminalServices-RemoteConnectionManager/Operational'} | Where-Object {$_.ID -eq '1149'}
+
+    for ($i=0; $i -lt $Data.Length; $i++) {
+
+        $Report = @{
+
+            Message = $Data[$i].Message
+            LoginTime = $Data[$i].TimeCreated
+
+        }
+        
+        [PSCustomObject]$Report | Select-Object -Property Message,LoginTime | Export-Csv -Path "D:\Desktop\LogginCheck.$IPAddress.csv" -Append -NoTypeInformation
+    }
+}
 
 $IPAddress  = ''
 $Username   = ''
 $Password   = ConvertTo-SecureString -AsPlainText -Force ''
 $Credential = New-Object System.Management.Automation.PSCredential -ArgumentList $Username,$Password
+
