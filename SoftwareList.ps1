@@ -1,4 +1,4 @@
-$Computers =  Import-Csv .\ITLabSecure.csv
+$Computers =  Import-Csv .\ITLabData.csv
 $Date      =  Get-Date -Format "yyyy.MM.dd"
 
 for ( $i = 0; $i -lt $Computers.Length; $i++) {
@@ -20,12 +20,13 @@ for ( $i = 0; $i -lt $Computers.Length; $i++) {
             Processor = 'PCOffline'
             OSName    = 'PCOffline'
             OSArck    = 'PCOffline'
+            Username  = $Computers[$i].Account
             Software  = 'PCOffline'
             SoftArck  = 'PCOffline'
             Version   = 'PCOffline'
         }
-        [PSCustomObject]$Result | Select-Object -Property Computer,Processor,OSName,OSArck,Software,SoftArck,Version | Format-Table -AutoSize
-        [PSCustomObject]$Result | Select-Object -Property Computer,Processor,OSName,OSArck,Software,SoftArck,Version | Export-Csv -Path ".\SoftwareListReport-$Date.csv" -Append -NoTypeInformation
+        [PSCustomObject]$Result | Select-Object -Property Computer,Processor,OSName,OSArck,Username,Software,SoftArck,Version | Format-Table -AutoSize
+        [PSCustomObject]$Result | Select-Object -Property Computer,Processor,OSName,OSArck,Username,Software,SoftArck,Version | Export-Csv -Path ".\SoftwareListReport-$Date.csv" -Append -NoTypeInformation
     
         $LoopContinue = $false
     }
@@ -45,34 +46,36 @@ for ( $i = 0; $i -lt $Computers.Length; $i++) {
     
                     $Result = @{
     
-                        Computer     = $Computers[$i].IP
-                        Processor    = $ProArck
-                        OSName       = $OS
-                        OSArck       = $OSArck
-                        Software     = $Response[$m].DisplayName
-                        SoftArck     = '32-Bit'
-                        Version      = $Response[$m].DisplayVersion
+                        Computer  = $Computers[$i].IP
+                        Processor = $ProArck
+                        OSName    = $OS
+                        OSArck    = $OSArck
+                        Username  = $Computers[$i].Account
+                        Software  = $Response[$m].DisplayName
+                        SoftArck  = '32-Bit'
+                        Version   = $Response[$m].DisplayVersion
                     }
     
-                    [PSCustomObject]$Result | Select-Object -Property Computer,Processor,OSName,OSArck,Software,SoftArck,Version | Format-Table -AutoSize
-                    [PSCustomObject]$Result | Select-Object -Property Computer,Processor,OSName,OSArck,Software,SoftArck,Version | Export-Csv -Path ".\SoftwareListReport-$Date.csv" -Append -NoTypeInformation
+                    [PSCustomObject]$Result | Select-Object -Property Computer,Processor,OSName,OSArck,Username,Software,SoftArck,Version | Format-Table -AutoSize
+                    [PSCustomObject]$Result | Select-Object -Property Computer,Processor,OSName,OSArck,Username,Software,SoftArck,Version | Export-Csv -Path ".\SoftwareListReport-$Date.csv" -Append -NoTypeInformation
                 }
             }
     
             else {
     
                 $Result = @{
-                    Computer     = $Computers[$i].IP
-                    Processor    = $ProArck
-                    OSName       = $OS
-                    OSArck       = $OSArck
-                    Software     = "No32-bitSoftwareFound"
-                    SoftArck     = "No32-bitSoftwareFound"
-                    Version      = "No32-bitSoftwareFound"
+                    Computer  = $Computers[$i].IP
+                    Processor = $ProArck
+                    OSName    = $OS
+                    OSArck    = $OSArck
+                    Username  = $Computers[$i].Account
+                    Software  = "No32-bitSoftwareFound"
+                    SoftArck  = "No32-bitSoftwareFound"
+                    Version   = "No32-bitSoftwareFound"
                 }
     
-                [PSCustomObject]$Result | Select-Object -Property Computer,Processor,OSName,OSArck,Software,SoftArck,Version | Format-Table -AutoSize
-                [PSCustomObject]$Result | Select-Object -Property Computer,Processor,OSName,OSArck,Software,SoftArck,Version | Export-Csv -Path ".\SoftwareListReport-$Date.csv" -Append -NoTypeInformation
+                [PSCustomObject]$Result | Select-Object -Property Computer,Processor,OSName,OSArck,Username,Software,SoftArck,Version | Format-Table -AutoSize
+                [PSCustomObject]$Result | Select-Object -Property Computer,Processor,OSName,OSArck,Username,Software,SoftArck,Version | Export-Csv -Path ".\SoftwareListReport-$Date.csv" -Append -NoTypeInformation
             } 
         }
     
@@ -88,34 +91,36 @@ for ( $i = 0; $i -lt $Computers.Length; $i++) {
         
                     $Result = @{
         
-                        Computer     = $Computers[$i].IP
-                        Processor    = $ProArck
-                        OSName       = $OS
-                        OSArck       = $OSArck
-                        Software     = $Response[$m].DisplayName
-                        SoftArck     = '64-Bit'
-                        Version      = $Response[$m].DisplayVersion
+                        Computer  = $Computers[$i].IP
+                        Processor = $ProArck
+                        OSName    = $OS
+                        OSArck    = $OSArck
+                        Username  = $Computers[$i].Account
+                        Software  = $Response[$m].DisplayName
+                        SoftArck  = '64-Bit'
+                        Version   = $Response[$m].DisplayVersion
                     }
         
-                    [PSCustomObject]$Result | Select-Object -Property Computer,Processor,OSName,OSArck,Software,SoftArck,Version | Format-Table -AutoSize
-                    [PSCustomObject]$Result | Select-Object -Property Computer,Processor,OSName,OSArck,Software,SoftArck,Version | Export-Csv -Path ".\SoftwareListReport-$Date.csv" -Append -NoTypeInformation
+                    [PSCustomObject]$Result | Select-Object -Property Computer,Processor,OSName,OSArck,Username,Software,SoftArck,Version | Format-Table -AutoSize
+                    [PSCustomObject]$Result | Select-Object -Property Computer,Processor,OSName,OSArck,Username,Software,SoftArck,Version | Export-Csv -Path ".\SoftwareListReport-$Date.csv" -Append -NoTypeInformation
                 }
             }
         
             else {
     
                 $Result = @{
-                    Computer     = $Computers[$i].IP
-                    Processor    = $ProArck
-                    OSName       = $OS
-                    OSArck       = $OSArck
-                    Software     = "No64-BitSoftwareFound"
-                    SoftArck     = "No64-BitSoftwareFound"
-                    Version      = "No64-BitSoftwareFound"
+                    Computer  = $Computers[$i].IP
+                    Processor = $ProArck
+                    OSName    = $OS
+                    OSArck    = $OSArck
+                    Username  = $Computers[$i].Account
+                    Software  = "No64-BitSoftwareFound"
+                    SoftArck  = "No64-BitSoftwareFound"
+                    Version   = "No64-BitSoftwareFound"
                 }
     
-                [PSCustomObject]$Result | Select-Object -Property Computer,Processor,OSName,OSArck,Software,SoftArck,Version | Format-Table -AutoSize
-                [PSCustomObject]$Result | Select-Object -Property Computer,Processor,OSName,OSArck,Software,SoftArck,Version | Export-Csv -Path ".\SoftwareListReport-$Date.csv" -Append -NoTypeInformation
+                [PSCustomObject]$Result | Select-Object -Property Computer,Processor,OSName,OSArck,Username,Software,SoftArck,Version | Format-Table -AutoSize
+                [PSCustomObject]$Result | Select-Object -Property Computer,Processor,OSName,OSArck,Username,Software,SoftArck,Version | Export-Csv -Path ".\SoftwareListReport-$Date.csv" -Append -NoTypeInformation
     
             }
         
@@ -129,51 +134,54 @@ for ( $i = 0; $i -lt $Computers.Length; $i++) {
     
                     $Result = @{
         
-                        Computer     = $Computers[$i].IP
-                        Processor    = $ProArck
-                        OSName       = $OS
-                        OSArck       = $OSArck
-                        Software     = $Response[$m].DisplayName
-                        SoftArck     = '32-Bit'
-                        Version      = $Response[$m].DisplayVersion
+                        Computer  = $Computers[$i].IP
+                        Processor = $ProArck
+                        OSName    = $OS
+                        OSArck    = $OSArck
+                        Username  = $Computers[$i].Account
+                        Software  = $Response[$m].DisplayName
+                        SoftArck  = '32-Bit'
+                        Version   = $Response[$m].DisplayVersion
                     }
         
-                    [PSCustomObject]$Result | Select-Object -Property Computer,Processor,OSName,OSArck,Software,SoftArck,Version | Format-Table -AutoSize
-                    [PSCustomObject]$Result | Select-Object -Property Computer,Processor,OSName,OSArck,Software,SoftArck,Version | Export-Csv -Path ".\SoftwareListReport-$Date.csv" -Append -NoTypeInformation
+                    [PSCustomObject]$Result | Select-Object -Property Computer,Processor,OSName,OSArck,Username,Software,SoftArck,Version | Format-Table -AutoSize
+                    [PSCustomObject]$Result | Select-Object -Property Computer,Processor,OSName,OSArck,Username,Software,SoftArck,Version | Export-Csv -Path ".\SoftwareListReport-$Date.csv" -Append -NoTypeInformation
                 }
             }
     
             else {
     
                 $Result = @{
-                    Computer     = $Computers[$i].IP
-                    Processor    = $ProArck
-                    OSName       = $OS
-                    OSArck       = $OSArck
-                    Software     = "No32-BitSoftwareFound"
-                    SoftArck     = "No32-BitSoftwareFound"
-                    Version      = "No32-BitSoftwareFound"
+                    Computer  = $Computers[$i].IP
+                    Processor = $ProArck
+                    OSName    = $OS
+                    OSArck    = $OSArck
+                    Username  = $Computers[$i].Account
+                    Software  = "No32-BitSoftwareFound"
+                    SoftArck  = "No32-BitSoftwareFound"
+                    Version   = "No32-BitSoftwareFound"
                 }
     
-                [PSCustomObject]$Result | Select-Object -Property Computer,Processor,OSName,OSArck,Software,SoftArck,Version | Format-Table -AutoSize
-                [PSCustomObject]$Result | Select-Object -Property Computer,Processor,OSName,OSArck,Software,SoftArck,Version | Export-Csv -Path ".\SoftwareListReport-$Date.csv" -Append -NoTypeInformation
+                [PSCustomObject]$Result | Select-Object -Property Computer,Processor,OSName,OSArck,Username,Software,SoftArck,Version | Format-Table -AutoSize
+                [PSCustomObject]$Result | Select-Object -Property Computer,Processor,OSName,OSArck,Username,Software,SoftArck,Version | Export-Csv -Path ".\SoftwareListReport-$Date.csv" -Append -NoTypeInformation
             }
         }    
     
         else {
     
             $Result = @{
-                Computer     = $Computers[$i].IP
-                Processor    = $ProArck
-                OSName       = $OS
-                OSArck       = $OSArck
-                Software     = 'ProcessorInfoError'
-                SoftArck     = 'ProcessorInfoError'
-                Version      = 'ProcessorInfoError'
+                Computer  = $Computers[$i].IP
+                Processor = $ProArck
+                OSName    = $OS
+                OSArck    = $OSArck
+                Username  = $Computers[$i].Account
+                Software  = 'ProcessorInfoError'
+                SoftArck  = 'ProcessorInfoError'
+                Version   = 'ProcessorInfoError'
             }
     
-            [PSCustomObject]$Result | Select-Object -Property Computer,Processor,OSName,OSArck,Software,SoftArck,Version | Format-Table -AutoSize
-            [PSCustomObject]$Result | Select-Object -Property Computer,Processor,OSName,OSArck,Software,SoftArck,Version | Export-Csv -Path ".\SoftwareListReport-$Date.csv" -Append -NoTypeInformation
+            [PSCustomObject]$Result | Select-Object -Property Computer,Processor,OSName,OSArck,Username,Software,SoftArck,Version | Format-Table -AutoSize
+            [PSCustomObject]$Result | Select-Object -Property Computer,Processor,OSName,OSArck,Username,Software,SoftArck,Version | Export-Csv -Path ".\SoftwareListReport-$Date.csv" -Append -NoTypeInformation
             
                 
         }
