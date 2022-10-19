@@ -123,9 +123,183 @@ function RDPRecord {
         [PSCustomObject]$Report | Select-Object -Property User,Device,Account,Domain,LoginTime | Export-Csv -Path "D:\Desktop\Powershell\RDPReport$(Get-Date -Format 'MM.dd.yyyy').csv" -Append -NoTypeInformation
     }
 }
+function SoftwareList {
 
-$IPAddress  = '192.168.0.122'
-$Username   = 'SHAdmin'
-$Password   = ConvertTo-SecureString -AsPlainText -Force 'ShellLPE!23'
+    $LoopContinue = $true
+
+    try {
+        $ProArck = Invoke-Command -ComputerName $IPAddress -Credential $Credential -ScriptBlock {$Env:PROCESSOR_ARCHITECTURE} -ErrorAction Stop
+        $OS      = Invoke-Command -ComputerName $IPAddress -Credential $Credential -ScriptBlock {[System.Environment]::OSVersion.VersionString} -ErrorAction Stop
+        $OSArck  = Invoke-Command -ComputerName $IPAddress -Credential $Credential -ScriptBlock {(wmic os get osarchitecture)[2] -replace ' ',''} -ErrorAction Stop
+    }
+    catch {
+        $Result = @{
+            Computer  = $IPAddress
+            Processor = 'PCOffline'
+            OSName    = 'PCOffline'
+            OSArck    = 'PCOffline'
+            Software  = 'PCOffline'
+            SoftArck  = 'PCOffline'
+            Version   = 'PCOffline'
+        }
+        [PSCustomObject]$Result | Select-Object -Property Computer,Processor,OSName,OSArck,Software,SoftArck,Version | Format-Table -AutoSize
+        [PSCustomObject]$Result | Select-Object -Property Computer,Processor,OSName,OSArck,Software,SoftArck,Version | Export-Csv -Path ".\SoftwareListReport.csv" -Append -NoTypeInformation
+
+        $LoopContinue = $false
+    }
+    finally {
+
+    if ($LoopContinue) {
+
+        if ($ProArck -match '86') {
+
+            $Response = Invoke-Command -ComputerName $IPAddress -Credential $Credential -ScriptBlock {Get-ChildItem -Path 'HKLM:\SOFTWARE\Microsoft\Windows\CurrentVersion\Uninstall\' | Get-ItemProperty | Select-Object -Property DisplayName,DisplayVersion} | Where-Object {$null -ne $_.Displayname}
+
+            if ($null -ne $Response) {
+
+                [Int32]$Count = ($Response | Measure-Object).Count
+
+                for ($i=0; $i -lt $Count; $i++) {
+
+                    $Result = @{
+
+                        Computer     = $IPAddress
+                        Processor    = $ProArck
+                        OSName       = $OS
+                        OSArck       = $OSArck
+                        Software     = $Response[$i].DisplayName
+                        SoftArck     = '32-Bit'
+                        Version      = $Response[$i].DisplayVersion
+                    }
+
+                    [PSCustomObject]$Result | Select-Object -Property Computer,Processor,OSName,OSArck,Software,SoftArck,Version | Format-Table -AutoSize
+                    [PSCustomObject]$Result | Select-Object -Property Computer,Processor,OSName,OSArck,Software,SoftArck,Version | Export-Csv -Path ".\SoftwareListReport.csv" -Append -NoTypeInformation
+                }
+            }
+
+            else {
+
+                $Result = @{
+                    Computer     = $IPAddress
+                    Processor    = $ProArck
+                    OSName       = $OS
+                    OSArck       = $OSArck
+                    Software     = "No32-bitSoftwareFound"
+                    SoftArck     = "No32-bitSoftwareFound"
+                    Version      = "No32-bitSoftwareFound"
+                }
+
+                [PSCustomObject]$Result | Select-Object -Property Computer,Processor,OSName,OSArck,Software,SoftArck,Version | Format-Table -AutoSize
+                [PSCustomObject]$Result | Select-Object -Property Computer,Processor,OSName,OSArck,Software,SoftArck,Version | Export-Csv -Path ".\SoftwareListReport.csv" -Append -NoTypeInformation
+            } 
+        }
+
+        elseif ($ProArck -match '64') {
+
+            $Response = Invoke-Command -ComputerName $IPAddress -Credential $Credential -ScriptBlock {Get-ChildItem -Path 'HKLM:\SOFTWARE\WOW6432Node\Microsoft\Windows\CurrentVersion\Uninstall\' | Get-ItemProperty | Select-Object -Property DisplayName,DisplayVersion} | Where-Object {$null -ne $_.Displayname}
+        
+            if ($null -ne $Response) {
+
+                [Int32]$Count = ($Response | Measure-Object).Count
+        
+                for ($i=0; $i -lt $Count; $i++) {
+        
+                    $Result = @{
+        
+                        Computer     = $IPAddress
+                        Processor    = $ProArck
+                        OSName       = $OS
+                        OSArck       = $OSArck
+                        Software     = $Response[$i].DisplayName
+                        SoftArck     = '64-Bit'
+                        Version      = $Response[$i].DisplayVersion
+                    }
+        
+                    [PSCustomObject]$Result | Select-Object -Property Computer,Processor,OSName,OSArck,Software,SoftArck,Version | Format-Table -AutoSize
+                    [PSCustomObject]$Result | Select-Object -Property Computer,Processor,OSName,OSArck,Software,SoftArck,Version | Export-Csv -Path ".\SoftwareListReport.csv" -Append -NoTypeInformation
+                }
+            }
+        
+            else {
+
+                $Result = @{
+                    Computer     = $IPAddress
+                    Processor    = $ProArck
+                    OSName       = $OS
+                    OSArck       = $OSArck
+                    Software     = "No64-BitSoftwareFound"
+                    SoftArck     = "No64-BitSoftwareFound"
+                    Version      = "No64-BitSoftwareFound"
+                }
+
+                [PSCustomObject]$Result | Select-Object -Property Computer,Processor,OSName,OSArck,Software,SoftArck,Version | Format-Table -AutoSize
+                [PSCustomObject]$Result | Select-Object -Property Computer,Processor,OSName,OSArck,Software,SoftArck,Version | Export-Csv -Path ".\SoftwareListReport.csv" -Append -NoTypeInformation
+
+            }
+        
+            $Response = Invoke-Command -ComputerName $IPAddress -Credential $Credential -ScriptBlock {Get-ChildItem -Path 'HKLM:\SOFTWARE\Microsoft\Windows\CurrentVersion\Uninstall\' | Get-ItemProperty | Select-Object -Property DisplayName,DisplayVersion} | Where-Object {$null -ne $_.Displayname}
+        
+            if ($null -ne $Response) {
+
+                [Int32]$Count = ($Response | Measure-Object).Count
+
+                for ($i=0; $i -lt $Count; $i++) {
+
+                    $Result = @{
+        
+                        Computer     = $IPAddress
+                        Processor    = $ProArck
+                        OSName       = $OS
+                        OSArck       = $OSArck
+                        Software     = $Response[$i].DisplayName
+                        SoftArck     = '32-Bit'
+                        Version      = $Response[$i].DisplayVersion
+                    }
+        
+                    [PSCustomObject]$Result | Select-Object -Property Computer,Processor,OSName,OSArck,Software,SoftArck,Version | Format-Table -AutoSize
+                    [PSCustomObject]$Result | Select-Object -Property Computer,Processor,OSName,OSArck,Software,SoftArck,Version | Export-Csv -Path ".\SoftwareListReport.csv" -Append -NoTypeInformation
+                }
+            }
+
+            else {
+
+                $Result = @{
+                    Computer     = $IPAddress
+                    Processor    = $ProArck
+                    OSName       = $OS
+                    OSArck       = $OSArck
+                    Software     = "No32-BitSoftwareFound"
+                    SoftArck     = "No32-BitSoftwareFound"
+                    Version      = "No32-BitSoftwareFound"
+                }
+
+                [PSCustomObject]$Result | Select-Object -Property Computer,Processor,OSName,OSArck,Software,SoftArck,Version | Format-Table -AutoSize
+                [PSCustomObject]$Result | Select-Object -Property Computer,Processor,OSName,OSArck,Software,SoftArck,Version | Export-Csv -Path ".\SoftwareListReport.csv" -Append -NoTypeInformation
+            }
+        }    
+
+        else {
+
+            $Result = @{
+                Computer     = $IPAddress
+                Processor    = $ProArck
+                OSName       = $OS
+                OSArck       = $OSArck
+                Software     = 'ProcessorInfoError'
+                SoftArck     = 'ProcessorInfoError'
+                Version      = 'ProcessorInfoError'
+            }
+
+            [PSCustomObject]$Result | Select-Object -Property Computer,Processor,OSName,OSArck,Software,SoftArck,Version | Format-Table -AutoSize
+            [PSCustomObject]$Result | Select-Object -Property Computer,Processor,OSName,OSArck,Software,SoftArck,Version | Export-Csv -Path ".\SoftwareListReport.csv" -Append -NoTypeInformation
+        }
+    }
+    }
+}
+
+
+$IPAddress  = ''
+$Username   = ''
+$Password   = ConvertTo-SecureString -AsPlainText -Force ''
 $Credential = New-Object System.Management.Automation.PSCredential -ArgumentList $Username,$Password
 
