@@ -106,23 +106,26 @@ function Ping {
 }
 function RDPRecord {
 
-    $Data = Invoke-Command -ComputerName $IPAddress -Credential $Credential -ScriptBlock {Get-WinEvent -LogName 'Microsoft-Windows-TerminalServices-RemoteConnectionManager/Operational'} | Where-Object {$_.ID -eq '1149'}
+    $Data = Invoke-Command -ComputerName $IPAddress -Credential $Credential -ScriptBlock {Get-WinEvent -LogName 'Microsoft-Windows-TerminalServices-RemoteConnectionManager/Operational'} | Where-Object {$_.ID -eq '1149' -and $_.TimeCreated -like "*$(Get-Date -Format 'MM/dd/yyyy')*"}
 
-    for ($i=0; $i -lt $Data.Length; $i++) {
-
+    for ($m=0; $m -lt $Data.Length; $m++) {
+    
         $Report = @{
-
-            Message = $Data[$i].Message
-            LoginTime = $Data[$i].TimeCreated
-
+    
+            User      = ($Data[$m].Message | Select-String -Pattern '地址:.*').Matches.Value -replace '地址: ',''
+            Device    = $IPAddress
+            Account   = ($Data[$m].Message | Select-String -Pattern '用户: .*').Matches.Value -replace '用户: ','' -replace "`r",''
+            Domain    = ($Data[$m].Message | Select-String -Pattern '域: .*').Matches.Value -replace '域: ','' -replace "`r",''
+            LoginTime = $Data[$m].TimeCreated
+    
         }
-        
-        [PSCustomObject]$Report | Select-Object -Property Message,LoginTime | Export-Csv -Path "D:\Desktop\LogginCheck.$IPAddress.csv" -Append -NoTypeInformation
+        [PSCustomObject]$Report | Select-Object -Property User,Device,Account,Domain,LoginTime | Format-Table -AutoSize
+        [PSCustomObject]$Report | Select-Object -Property User,Device,Account,Domain,LoginTime | Export-Csv -Path "D:\Desktop\Powershell\RDPReport$(Get-Date -Format 'MM.dd.yyyy').csv" -Append -NoTypeInformation
     }
 }
 
-$IPAddress  = ''
-$Username   = ''
-$Password   = ConvertTo-SecureString -AsPlainText -Force ''
+$IPAddress  = '192.168.0.122'
+$Username   = 'SHAdmin'
+$Password   = ConvertTo-SecureString -AsPlainText -Force 'ShellLPE!23'
 $Credential = New-Object System.Management.Automation.PSCredential -ArgumentList $Username,$Password
 
