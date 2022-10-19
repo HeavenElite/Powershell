@@ -303,3 +303,17 @@ $Username   = ''
 $Password   = ConvertTo-SecureString -AsPlainText -Force ''
 $Credential = New-Object System.Management.Automation.PSCredential -ArgumentList $Username,$Password
 
+
+
+# FunctionList
+# Get-Storage
+# Show-Backup
+# Shutdown
+# PSVersion
+# AutoStart
+# ServiceCheck
+# SoftwareCheck
+# BackupCheck
+# Ping
+# RDPRecord
+# SoftwareList
