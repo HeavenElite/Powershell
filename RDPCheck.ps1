@@ -10,7 +10,7 @@ for ($i=0; $i -lt $Computers.Length; $i++) {
 
     try {
 
-        $Data = Invoke-Command -ComputerName $Computers[$i].IP -Credential $Credential -ScriptBlock {Get-WinEvent -LogName 'Microsoft-Windows-TerminalServices-RemoteConnectionManager/Operational'} | Where-Object {$_.ID -eq '1149' -and $_.TimeCreated -like "*$(Get-Date -Format 'MM/dd/yyyy')*"}
+        $Data = Invoke-Command -ComputerName $Computers[$i].IP -Credential $Credential -ScriptBlock {Get-WinEvent -LogName 'Microsoft-Windows-TerminalServices-RemoteConnectionManager/Operational'} | Where-Object {$_.ID -eq '1149' -and $_.TimeCreated -like "*$(Get-Date -Format 'MM/dd/yyyy')*"} -ErrorAction Stop
     }
     catch {
 
