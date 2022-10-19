@@ -19,7 +19,7 @@ for ($i=0; $i -lt $Computers.Length; $i++) {
     
         }
         [PSCustomObject]$Report | Select-Object -Property User,Device,Account,Domain,LoginTime | Format-Table -AutoSize
-        [PSCustomObject]$Report | Select-Object -Property User,Device,Account,Domain,LoginTime | Export-Csv -Path "D:\Desktop\Powershell\RDPRecord.csv" -Append -NoTypeInformation
+        [PSCustomObject]$Report | Select-Object -Property User,Device,Account,Domain,LoginTime | Export-Csv -Path "D:\Desktop\Powershell\RDPReport$(Get-Date -Format 'yyyy.MM.dd').csv" -Append -NoTypeInformation
 
     }
 }
