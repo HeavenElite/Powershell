@@ -1,4 +1,4 @@
-$Computers = Import-Csv .\ITLabData.csv
+﻿$Computers = Import-Csv .\ITLabData.csv
 $Date = Get-Date -Format 'yyyy.MM.dd'
 $Path = "D:\Desktop\Powershell\RDPCheckReport-$Date.csv"
 
@@ -52,7 +52,5 @@ for ($i=0; $i -lt $Computers.Length; $i++) {
     }
     }
 }
-
-(Get-Content -Path $Path) -replace ',',"`t" | Set-Content -Path $Path
 
 [System.Console]::Beep(1000,1000)

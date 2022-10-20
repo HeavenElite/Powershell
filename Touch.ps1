@@ -380,3 +380,4 @@ $Username   = Import-Csv -Path .\ITLabData.csv | Where-Object {$_.IP -eq "$IPAdd
 $Password   = ConvertTo-SecureString -AsPlainText -Force (Import-Csv -Path .\ITLabData.csv | Where-Object {$_.IP -eq "$IPAddress"} | Select-Object -ExpandProperty Password)
 $Credential = New-Object System.Management.Automation.PSCredential -ArgumentList $Username,$Password
 
+RDPRecord
