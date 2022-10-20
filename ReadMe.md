@@ -6,7 +6,7 @@
 |3|DiskInfo|收集磁盘分区容量信息，输出Excel文件|
 |4|EPSCheck|检查EPS版本的本地程序|
 |5|EPSCheckRemoteScript|检查EPS版本的远程主机脚本|
-|6|OneTime|针对单个系统执行的脚本|
+|6|Touch|针对单个系统执行的脚本|
 |7|Ping|批量检查RDP和HTTP连通性|
 |8|PortCheck|检查WinRM服务连通性|
 |9|RDPCheck|检查RDP登录记录|
