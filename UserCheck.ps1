@@ -1,4 +1,4 @@
-$Computers = Import-Csv .\ITLabData.csv
+﻿$Computers = Import-Csv .\ITLabData.csv
 $Date = Get-Date -Format 'yyyy.MM.dd'
 $Path = "UserCheckReport-$Date.csv"
 
