@@ -11,7 +11,7 @@
             PartSize = [Math]::Round((($Item.Used + $Item.Free) / 1GB), 0)
         }
         $Report | Where-Object {$_.FreeSize -ne '0'} | Select-Object -Property Computer,PartNum,PartSize,UsedSize,FreeSize | Format-Table -AutoSize
-    #   $Result | Select-Object -Property PSComputerName,DeviceID,Size,FreeSpace | Where-Object {$_.FreeSpace -ne '0'} | Export-Csv -Path ".\PracVM-$(Get-Date -Format "dddd.HH.mm").csv" -Append -NoTypeInformation   
+       $Result | Select-Object -Property PSComputerName,DeviceID,Size,FreeSpace | Where-Object {$_.FreeSpace -ne '0'} | Export-Csv -Path ".\PracVM-$(Get-Date -Format "dddd.HH.mm").csv" -Append -NoTypeInformation   
     }
 }
 function Show-Backup {
@@ -297,6 +297,69 @@ function SoftwareList {
     }
     }
 }
+function UserCheck {
+
+    try {
+        $Response = Invoke-Command -ComputerName $IPAddress -Credential $Credential -ScriptBlock {qwinsta.exe /server:localhost | Select-String -Pattern '会话','Session','rdp-tcp#','运行中','Active' | ForEach-Object {$_ -replace ' +',' '}} -ErrorAction Stop
+    }
+    catch {
+        $Report = @{
+
+            IPAddress = $IPAddress
+            Account = '设备离线'
+            Session = '设备离线'
+            Status = '设备离线' 
+            Suggestion = '检查硬件'
+        }
+
+        [PSCustomObject]$Report | Select-Object -Property 'IPAddress','Account','Session','Status','Suggestion' | Format-Table -AutoSize
+    }
+    finally {
+
+        if (($Response | Measure-Object).Count -eq 1) {
+            
+            $Report = @{
+
+                IPAddress = $IPAddress
+                Account = '空闲'
+                Session = '空闲'
+                Status = '空闲' 
+                Suggestion = '登录远程桌面'
+            }
+            [PSCustomObject]$Report | Select-Object -Property 'IPAddress','Account','Session','Status','Suggestion' | Format-Table -AutoSize 
+        }
+
+        elseif (($Response | Measure-Object).Count -gt 1) {
+
+            for ($i=1; $i -lt $Response.Length; $i++) {
+                $Report = @{
+
+                    IPAddress = $IPAddress
+                    Account = $Response[$i].Split(' ')[2]
+                    Session = $Response[$i].Split(' ')[1]
+                    Status = $Response[1].Split(' ')[4]
+                    Suggestion = '联系登录用户'
+                }
+            
+            [PSCustomObject]$Report | Select-Object -Property 'IPAddress','Account','Session','Status','Suggestion' | Format-Table -AutoSize
+            }
+        }
+
+        else {
+
+            $Report = @{
+
+                IPAddress = $IPAddress
+                Account = '执行异常'
+                Session = '执行异常'
+                Status = '执行异常'
+                Suggestion = '执行异常'
+            }
+        
+            [PSCustomObject]$Report | Select-Object -Property 'IPAddress','Account','Session','Status','Suggestion' | Format-Table -AutoSize
+        }
+    }
+}
 
 # FunctionList
 # Get-Storage
@@ -310,9 +373,11 @@ function SoftwareList {
 # Ping -Port
 # RDPRecord
 # SoftwareList
+# UserCheck
 
 $IPAddress  = '192.168.0.160'
 $Username   = Import-Csv -Path .\ITLabData.csv | Where-Object {$_.IP -eq "$IPAddress"} | Select-Object -ExpandProperty Account
 $Password   = ConvertTo-SecureString -AsPlainText -Force (Import-Csv -Path .\ITLabData.csv | Where-Object {$_.IP -eq "$IPAddress"} | Select-Object -ExpandProperty Password)
 $Credential = New-Object System.Management.Automation.PSCredential -ArgumentList $Username,$Password
 
+UserCheck

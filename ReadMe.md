@@ -19,3 +19,4 @@
 |16|SortList|统计所有安装的软件信息|
 |17|SortCsv|按照某列对CSV重新排序|
 |18|Systeminfo|搜集虚机信息的脚本|
+|19|UserCheck|检查设备的登录状态|
