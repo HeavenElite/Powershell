@@ -1,4 +1,4 @@
-function Get-Storage {
+﻿function Get-Storage {
     [CmdletBinding()]
     $Result = Invoke-Command -ComputerName $IPAddress -Credential $Credential -ScriptBlock {Get-PSDrive -PSProvider FileSystem}
 
@@ -106,6 +106,7 @@ function Ping {
 }
 function RDPRecord {
 
+    $Date = Get-Date -Format 'yyyy.MM.dd'
     $Data = Invoke-Command -ComputerName $IPAddress -Credential $Credential -ScriptBlock {Get-WinEvent -LogName 'Microsoft-Windows-TerminalServices-RemoteConnectionManager/Operational'} | Where-Object {$_.ID -eq '1149' -and $_.TimeCreated -like "*$(Get-Date -Format 'MM/dd/yyyy')*"}
 
     for ($m=0; $m -lt $Data.Length; $m++) {
@@ -120,7 +121,7 @@ function RDPRecord {
     
         }
         [PSCustomObject]$Report | Select-Object -Property User,Device,Account,Domain,LoginTime | Format-Table -AutoSize
-        [PSCustomObject]$Report | Select-Object -Property User,Device,Account,Domain,LoginTime | Export-Csv -Path "D:\Desktop\Powershell\RDPReport$(Get-Date -Format 'MM.dd.yyyy').csv" -Append -NoTypeInformation
+        [PSCustomObject]$Report | Select-Object -Property User,Device,Account,Domain,LoginTime | Export-Csv -Path "D:\Desktop\Powershell\RDPReport-$Date.csv" -Append -NoTypeInformation
     }
 }
 function SoftwareList {
@@ -304,14 +305,14 @@ function SoftwareList {
 # PSVersion
 # AutoStart
 # ServiceCheck
-# SoftwareCheck
+# SoftwareCheck -Name
 # BackupCheck
-# Ping
+# Ping -Port
 # RDPRecord
 # SoftwareList
 
-$IPAddress  = ''
-$Username   = ''
-$Password   = ConvertTo-SecureString -AsPlainText -Force ''
+$IPAddress  = '192.168.0.160'
+$Username   = Import-Csv -Path .\ITLabData.csv | Where-Object {$_.IP -eq "$IPAddress"} | Select-Object -ExpandProperty Account
+$Password   = ConvertTo-SecureString -AsPlainText -Force (Import-Csv -Path .\ITLabData.csv | Where-Object {$_.IP -eq "$IPAddress"} | Select-Object -ExpandProperty Password)
 $Credential = New-Object System.Management.Automation.PSCredential -ArgumentList $Username,$Password
 
