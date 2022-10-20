@@ -25,7 +25,7 @@ for ($i=0; $i -lt $Computers.Length; $i++) {
         }
 
         [PSCustomObject]$Report | Select-Object -Property User,Device,Account,Domain,LoginTime | Format-Table -AutoSize
-        [PSCustomObject]$Report | Select-Object -Property User,Device,Account,Domain,LoginTime | Export-Csv -Path "D:\Desktop\Powershell\RDPReport-$Date.csv" -Append -NoTypeInformation
+        [PSCustomObject]$Report | Select-Object -Property User,Device,Account,Domain,LoginTime | Export-Csv -Path "D:\Desktop\Powershell\RDPCheckReport-$Date.csv" -Append -NoTypeInformation
 
         $LoopContinue = $false 
     }    
@@ -45,7 +45,7 @@ for ($i=0; $i -lt $Computers.Length; $i++) {
         
             }
             [PSCustomObject]$Report | Select-Object -Property User,Device,Account,Domain,LoginTime | Format-Table -AutoSize
-            [PSCustomObject]$Report | Select-Object -Property User,Device,Account,Domain,LoginTime | Export-Csv -Path "D:\Desktop\Powershell\RDPReport-$Date.csv" -Append -NoTypeInformation
+            [PSCustomObject]$Report | Select-Object -Property User,Device,Account,Domain,LoginTime | Export-Csv -Path "D:\Desktop\Powershell\RDPCheckReport-$Date.csv" -Append -NoTypeInformation
 
         }
     }
