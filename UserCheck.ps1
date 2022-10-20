@@ -81,6 +81,6 @@ for ($i=0; $i -lt $Computers.Length; $i++) {
     }
 }
 
-(Get-Content -Path $Path) -replace ',',"`t" | Set-Content -Path $Path
+# (Get-Content -Path $Path) -replace ',',"`t" | Set-Content -Path $Path
 
 [System.Console]::Beep(1000,1000)
