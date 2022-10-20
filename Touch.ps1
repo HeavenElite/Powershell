@@ -106,7 +106,6 @@ function Ping {
 }
 function RDPRecord {
 
-    $Date = Get-Date -Format 'yyyy.MM.dd'
     $Data = Invoke-Command -ComputerName $IPAddress -Credential $Credential -ScriptBlock {Get-WinEvent -LogName 'Microsoft-Windows-TerminalServices-RemoteConnectionManager/Operational'} | Where-Object {$_.ID -eq '1149' -and $_.TimeCreated -like "*$(Get-Date -Format 'MM/dd/yyyy')*"}
 
     for ($m=0; $m -lt $Data.Length; $m++) {
@@ -121,7 +120,7 @@ function RDPRecord {
     
         }
         [PSCustomObject]$Report | Select-Object -Property User,Device,Account,Domain,LoginTime | Format-Table -AutoSize
-        [PSCustomObject]$Report | Select-Object -Property User,Device,Account,Domain,LoginTime | Export-Csv -Path "D:\Desktop\Powershell\RDPReport-$Date.csv" -Append -NoTypeInformation
+#       [PSCustomObject]$Report | Select-Object -Property User,Device,Account,Domain,LoginTime | Export-Csv -Path "D:\Desktop\Powershell\RDPReport-$(Get-Date -Format 'yyyy.MM.dd').csv" -Append -NoTypeInformation
     }
 }
 function SoftwareList {
