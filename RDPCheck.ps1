@@ -1,4 +1,5 @@
 $Computers = Import-Csv .\ITLabData.csv
+$Date = Get-Date -Format 'yyyy.MM.dd'
 
 for ($i=0; $i -lt $Computers.Length; $i++) {
 
@@ -10,7 +11,7 @@ for ($i=0; $i -lt $Computers.Length; $i++) {
 
     try {
 
-        $Data = Invoke-Command -ComputerName $Computers[$i].IP -Credential $Credential -ScriptBlock {Get-WinEvent -LogName 'Microsoft-Windows-TerminalServices-RemoteConnectionManager/Operational'} -ErrorAction Stop | Where-Object {$_.ID -eq '1149' -and $_.TimeCreated -like "*$(Get-Date -Format 'MM/dd/yyyy')*"}
+        $Data = Invoke-Command -ComputerName $Computers[$i].IP -Credential $Credential -ScriptBlock {Get-WinEvent -LogName 'Microsoft-Windows-TerminalServices-RemoteConnectionManager/Operational' | Where-Object {$_.ID -eq '1149' -and $_.TimeCreated -like "*$(Get-Date -Format 'MM/dd/yyyy')*"}} -ErrorAction Stop
     }
     catch {
 
@@ -24,7 +25,7 @@ for ($i=0; $i -lt $Computers.Length; $i++) {
         }
 
         [PSCustomObject]$Report | Select-Object -Property User,Device,Account,Domain,LoginTime | Format-Table -AutoSize
-        [PSCustomObject]$Report | Select-Object -Property User,Device,Account,Domain,LoginTime | Export-Csv -Path "D:\Desktop\Powershell\RDPReport$(Get-Date -Format 'yyyy.MM.dd').csv" -Append -NoTypeInformation
+        [PSCustomObject]$Report | Select-Object -Property User,Device,Account,Domain,LoginTime | Export-Csv -Path "D:\Desktop\Powershell\RDPReport-$Date.csv" -Append -NoTypeInformation
 
         $LoopContinue = $false 
     }    
@@ -44,7 +45,7 @@ for ($i=0; $i -lt $Computers.Length; $i++) {
         
             }
             [PSCustomObject]$Report | Select-Object -Property User,Device,Account,Domain,LoginTime | Format-Table -AutoSize
-            [PSCustomObject]$Report | Select-Object -Property User,Device,Account,Domain,LoginTime | Export-Csv -Path "D:\Desktop\Powershell\RDPReport$(Get-Date -Format 'yyyy.MM.dd').csv" -Append -NoTypeInformation
+            [PSCustomObject]$Report | Select-Object -Property User,Device,Account,Domain,LoginTime | Export-Csv -Path "D:\Desktop\Powershell\RDPReport-$Date.csv" -Append -NoTypeInformation
 
         }
     }
