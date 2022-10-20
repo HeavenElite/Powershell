@@ -1,5 +1,6 @@
 $Computers = Import-Csv .\ITLabData.csv
 $Date = Get-Date -Format 'yyyy.MM.dd'
+$Path = "UserCheckReport-$Date.csv"
 
 for ($i=0; $i -lt $Computers.Length; $i++) {
 
@@ -23,7 +24,7 @@ for ($i=0; $i -lt $Computers.Length; $i++) {
         }
 
         [PSCustomObject]$Report | Select-Object -Property 'IPAddress','Account','Session','Status','Suggestion' | Format-Table -AutoSize
-        [PSCustomObject]$Report | Select-Object -Property 'IPAddress','Account','Session','Status','Suggestion' | Export-Csv -Path "UserCheckReport-$Date.csv" -Append -NoTypeInformation
+        [PSCustomObject]$Report | Select-Object -Property 'IPAddress','Account','Session','Status','Suggestion' | Export-Csv -Path $Path -Append -NoTypeInformation
     
         $LoopContinue = $false
     }
@@ -42,7 +43,7 @@ for ($i=0; $i -lt $Computers.Length; $i++) {
                 Suggestion = 'PleaseLogin'
             }
             [PSCustomObject]$Report | Select-Object -Property 'IPAddress','Account','Session','Status','Suggestion' | Format-Table -AutoSize
-            [PSCustomObject]$Report | Select-Object -Property 'IPAddress','Account','Session','Status','Suggestion' | Export-Csv -Path "UserCheckReport-$Date.csv" -Append -NoTypeInformation
+            [PSCustomObject]$Report | Select-Object -Property 'IPAddress','Account','Session','Status','Suggestion' | Export-Csv -Path $Path -Append -NoTypeInformation
         }
 
         elseif (($Response | Measure-Object).Count -gt 1) {
@@ -58,7 +59,7 @@ for ($i=0; $i -lt $Computers.Length; $i++) {
                 }
             
             [PSCustomObject]$Report | Select-Object -Property 'IPAddress','Account','Session','Status','Suggestion' | Format-Table -AutoSize
-            [PSCustomObject]$Report | Select-Object -Property 'IPAddress','Account','Session','Status','Suggestion' | Export-Csv -Path "UserCheckReport-$Date.csv" -Append -NoTypeInformation
+            [PSCustomObject]$Report | Select-Object -Property 'IPAddress','Account','Session','Status','Suggestion' | Export-Csv -Path $Path -Append -NoTypeInformation
             }
         }
 
@@ -74,8 +75,12 @@ for ($i=0; $i -lt $Computers.Length; $i++) {
             }
         
             [PSCustomObject]$Report | Select-Object -Property 'IPAddress','Account','Session','Status','Suggestion' | Format-Table -AutoSize
-            [PSCustomObject]$Report | Select-Object -Property 'IPAddress','Account','Session','Status','Suggestion' | Export-Csv -Path "UserCheckReport-$Date.csv" -Append -NoTypeInformation
+            [PSCustomObject]$Report | Select-Object -Property 'IPAddress','Account','Session','Status','Suggestion' | Export-Csv -Path $Path -Append -NoTypeInformation
         }
     }
     }
 }
+
+(Get-Content -Path $Path) -replace ',',"`t" | Set-Content -Path $Path
+
+[System.Console]::Beep(1000,1000)

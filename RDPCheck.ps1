@@ -1,5 +1,6 @@
 $Computers = Import-Csv .\ITLabData.csv
 $Date = Get-Date -Format 'yyyy.MM.dd'
+$Path = "D:\Desktop\Powershell\RDPCheckReport-$Date.csv"
 
 for ($i=0; $i -lt $Computers.Length; $i++) {
 
@@ -25,7 +26,7 @@ for ($i=0; $i -lt $Computers.Length; $i++) {
         }
 
         [PSCustomObject]$Report | Select-Object -Property User,Device,Account,Domain,LoginTime | Format-Table -AutoSize
-        [PSCustomObject]$Report | Select-Object -Property User,Device,Account,Domain,LoginTime | Export-Csv -Path "D:\Desktop\Powershell\RDPCheckReport-$Date.csv" -Append -NoTypeInformation
+        [PSCustomObject]$Report | Select-Object -Property User,Device,Account,Domain,LoginTime | Export-Csv -Path $Path -Append -NoTypeInformation
 
         $LoopContinue = $false 
     }    
@@ -45,9 +46,13 @@ for ($i=0; $i -lt $Computers.Length; $i++) {
         
             }
             [PSCustomObject]$Report | Select-Object -Property User,Device,Account,Domain,LoginTime | Format-Table -AutoSize
-            [PSCustomObject]$Report | Select-Object -Property User,Device,Account,Domain,LoginTime | Export-Csv -Path "D:\Desktop\Powershell\RDPCheckReport-$Date.csv" -Append -NoTypeInformation
+            [PSCustomObject]$Report | Select-Object -Property User,Device,Account,Domain,LoginTime | Export-Csv -Path $Path -Append -NoTypeInformation
 
         }
     }
     }
 }
+
+(Get-Content -Path $Path) -replace ',',"`t" | Set-Content -Path $Path
+
+[System.Console]::Beep(1000,1000)
