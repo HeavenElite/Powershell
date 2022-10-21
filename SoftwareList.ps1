@@ -12,7 +12,7 @@ for ( $i = 0; $i -lt ($Computers | Measure-Object).Count; $i++) {
     try {
         $ProArck = Invoke-Command -ComputerName $Computers[$i].IP -Credential $Credential -ScriptBlock {$Env:PROCESSOR_ARCHITECTURE} -ErrorAction Stop
         $OS      = Invoke-Command -ComputerName $Computers[$i].IP -Credential $Credential -ScriptBlock {[System.Environment]::OSVersion.VersionString} -ErrorAction Stop
-        $OSArck  = Invoke-Command -ComputerName $Computers[$i].IP -Credential $Credential -ScriptBlock {(wmic os get osarchitecture)[2] -replace ' ',''} -ErrorAction Stop
+        $OSArck  = Invoke-Command -ComputerName $Computers[$i].IP -Credential $Credential -ScriptBlock {((wmic os get osarchitecture)[2] | Select-String '[0-9]+').Matches.Value} -ErrorAction Stop
     }
     catch {
         $Result = @{

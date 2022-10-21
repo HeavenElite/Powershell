@@ -130,7 +130,7 @@ function SoftwareList {
     try {
         $ProArck = Invoke-Command -ComputerName $IPAddress -Credential $Credential -ScriptBlock {$Env:PROCESSOR_ARCHITECTURE} -ErrorAction Stop
         $OS      = Invoke-Command -ComputerName $IPAddress -Credential $Credential -ScriptBlock {[System.Environment]::OSVersion.VersionString} -ErrorAction Stop
-        $OSArck  = Invoke-Command -ComputerName $IPAddress -Credential $Credential -ScriptBlock {(wmic os get osarchitecture)[2] -replace ' ',''} -ErrorAction Stop
+        $OSArck  = Invoke-Command -ComputerName $IPAddress -Credential $Credential -ScriptBlock {((wmic os get osarchitecture)[2] | Select-String '[0-9]+').Matches.Value} -ErrorAction Stop
     }
     catch {
         $Result = @{
@@ -374,8 +374,9 @@ function UserCheck {
 # SoftwareList
 # UserCheck
 
-$IPAddress  = '192.168.0.160'
+$IPAddress  = '192.168.0.50'
 $Username   = Import-Csv -Path .\ITLab\ITLabData.csv | Where-Object {$_.IP -eq "$IPAddress"} | Select-Object -ExpandProperty Account
 $Password   = ConvertTo-SecureString -AsPlainText -Force (Import-Csv -Path .\ITLab\ITLabData.csv | Where-Object {$_.IP -eq "$IPAddress"} | Select-Object -ExpandProperty Password)
 $Credential = New-Object System.Management.Automation.PSCredential -ArgumentList $Username,$Password
 
+SoftwareCheck -Name WinSCP
