@@ -1,7 +1,7 @@
 $Computers =  Import-Csv .\ITLabData.csv
 $Date      =  Get-Date -Format "yyyy.MM.dd"
 
-for ( $i = 0; $i -lt $Computers.Length; $i++) {
+for ( $i = 0; $i -lt ($Computers | Measure-Object).Count; $i++) {
 
     $Username   = $Computers[$i].Account
     $Password   = ConvertTo-SecureString -AsPlainText $Computers[$i].Password -Force

@@ -2,7 +2,7 @@
 $Date = Get-Date -Format 'yyyy.MM.dd'
 $Path = "D:\Desktop\Powershell\RDPCheckReport-$Date.csv"
 
-for ($i=0; $i -lt $Computers.Length; $i++) {
+for ($i=0; $i -lt ($Computers | Measure-Object).Count; $i++) {
 
     $Username   = $Computers[$i].Account
     $Password   = ConvertTo-SecureString -AsPlainText $Computers[$i].Password -Force
