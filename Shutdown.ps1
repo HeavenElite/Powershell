@@ -1,4 +1,4 @@
-$Computers = Import-Csv .\ITLabStop.csv
+$Computers = Import-Csv .\ITLab\ITLabStop.csv
 for ( $i = 0; $i -lt ($Computers | Measure-Object).Count; $i++) {
 
     $Username   = $Computers[$i].Account

@@ -1,4 +1,4 @@
-﻿$Servers = Import-Csv -Path .\ITLabPing.csv -Header 'Protocal', 'IP', 'Port'
+﻿$Servers = Import-Csv -Path .\ITLab\ITLabPing.csv -Header 'Protocal', 'IP', 'Port'
 
 for ( $i = 0; $i -lt $Servers.Length; $i++)
 {   

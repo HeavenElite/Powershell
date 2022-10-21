@@ -1,4 +1,4 @@
-$Computers =  Import-Csv .\ITLabData.csv
+$Computers =  Import-Csv .\ITLab\ITLabData.csv
 $Date      =  Get-Date -Format "yyyy.MM.dd"
 
 for ( $i = 0; $i -lt ($Computers | Measure-Object).Count; $i++) {

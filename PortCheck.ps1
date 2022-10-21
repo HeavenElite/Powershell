@@ -1,4 +1,4 @@
-﻿$Servers = Import-Csv -Path .\ITLabService.csv -Header 'Protocal', 'IP', 'Port'
+﻿$Servers = Import-Csv -Path .\ITLab\ITLabService.csv -Header 'Protocal', 'IP', 'Port'
 $i = 1
 foreach ($Server in $Servers)
 {   

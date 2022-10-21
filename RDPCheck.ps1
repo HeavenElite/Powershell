@@ -1,4 +1,4 @@
-﻿$Computers = Import-Csv .\ITLabData.csv
+﻿$Computers = Import-Csv .\ITLab\ITLabData.csv
 $Date = Get-Date -Format 'yyyy.MM.dd'
 $Path = "D:\Desktop\Powershell\RDPCheckReport-$Date.csv"
 
