@@ -11,7 +11,7 @@ if ($Env:PROCESSOR_ARCHITECTURE -match '86') {
             Computer     = $IPAddress
             Processor    = $Env:PROCESSOR_ARCHITECTURE
             OSName       = [System.Environment]::OSVersion.VersionString
-            OSArck       = ((wmic os get osarchitecture)[2] | Select-String '[0-9]+').Matches.Value
+            OSArck       = (wmic os get osarchitecture)[2].Substring(0,2)
             Software     = $Response.DisplayName
             SoftArck     = '32-Bit'
             Version      = $Response.DisplayVersion
@@ -26,7 +26,7 @@ if ($Env:PROCESSOR_ARCHITECTURE -match '86') {
             Computer     = $IPAddress
             Processor    = $Env:PROCESSOR_ARCHITECTURE
             OSName       = [System.Environment]::OSVersion.VersionString
-            OSArck       = ((wmic os get osarchitecture)[2] | Select-String '[0-9]+').Matches.Value
+            OSArck       = (wmic os get osarchitecture)[2].Substring(0,2)
             Software     = "NotInstalled"
             SoftArck     = "NotInstalled"
             Version      = "NotInstalled"
@@ -45,7 +45,7 @@ elseif ($Env:PROCESSOR_ARCHITECTURE -match '64') {
             Computer     = $IPAddress
             Processor    = $Env:PROCESSOR_ARCHITECTURE
             OSName       = [System.Environment]::OSVersion.VersionString
-            OSArck       = ((wmic os get osarchitecture)[2] | Select-String '[0-9]+').Matches.Value
+            OSArck       = (wmic os get osarchitecture)[2].Substring(0,2)
             Software     = $Response.DisplayName
             SoftArck     = '64-Bit'
             Version      = $Response.DisplayVersion
@@ -64,7 +64,7 @@ elseif ($Env:PROCESSOR_ARCHITECTURE -match '64') {
                 Computer     = $IPAddress
                 Processor    = $Env:PROCESSOR_ARCHITECTURE
                 OSName       = [System.Environment]::OSVersion.VersionString
-                OSArck       = ((wmic os get osarchitecture)[2] | Select-String '[0-9]+').Matches.Value
+                OSArck       = (wmic os get osarchitecture)[2].Substring(0,2)
                 Software     = $Response.DisplayName
                 SoftArck     = '32-Bit'
                 Version      = $Response.DisplayVersion
@@ -79,7 +79,7 @@ elseif ($Env:PROCESSOR_ARCHITECTURE -match '64') {
                 Computer     = $IPAddress
                 Processor    = $Env:PROCESSOR_ARCHITECTURE
                 OSName       = [System.Environment]::OSVersion.VersionString
-                OSArck       = ((wmic os get osarchitecture)[2] | Select-String '[0-9]+').Matches.Value
+                OSArck       = (wmic os get osarchitecture)[2].Substring(0,2)
                 Software     = "NotInstalled"
                 SoftArck     = "NotInstalled"
                 Version      = "NotInstalled"
@@ -96,7 +96,7 @@ else {
         Computer     = $IPAddress
         Processor    = $Env:PROCESSOR_ARCHITECTURE
         OSName       = [System.Environment]::OSVersion.VersionString
-        OSArck       = ((wmic os get osarchitecture)[2] | Select-String '[0-9]+').Matches.Value
+        OSArck       = (wmic os get osarchitecture)[2].Substring(0,2)
         Software     = 'ProcessorInfoError'
         SoftArck     = 'ProcessorInfoError'
         Version      = 'ProcessorInfoError'
