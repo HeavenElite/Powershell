@@ -1,4 +1,16 @@
 ﻿$Servers = Import-Csv -Path .\ITLab\ITLabPing.csv -Header 'Protocal', 'IP', 'Port', 'Site'
+$Path    = ".\PingReport-$(Get-Date -Format "yyyy.MM.dd").csv"
+
+if (Test-Path -Path $Path) {
+
+    Remove-Item -Path .\$Path
+    Write-Output "Previous file $Path is removed. `n"
+}
+
+else {
+
+    Write-Output "Csv file $Path is generated. `n"
+}
 
 for ( $i = 0; $i -lt $Servers.Length; $i++)
 {   
@@ -21,9 +33,9 @@ for ( $i = 0; $i -lt $Servers.Length; $i++)
     }
     
     [PSCustomObject]$Report | Select-Object -Property No,Site,Server,Service,Port,Result | Format-Table -AutoSize
-    [PSCustomObject]$Report | Select-Object -Property No,Site,Server,Service,Port,Result | Export-Csv -Path ".\PingReport-$(Get-Date -Format "yyyy.MM.dd").csv" -NoTypeInformation -Append
+    [PSCustomObject]$Report | Select-Object -Property No,Site,Server,Service,Port,Result | Export-Csv -Path $Path -NoTypeInformation -Append
 }
 
-Import-Csv -Path ".\PingReport-$(Get-Date -Format "yyyy.MM.dd").csv" | Sort-Object -Property Result,Site | Format-Table -AutoSize
+Import-Csv -Path $Path | Sort-Object -Property Result,Site | Format-Table -AutoSize
 
 [System.Console]::Beep(1000,1000)
