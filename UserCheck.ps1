@@ -2,6 +2,16 @@
 $Date = Get-Date -Format 'yyyy.MM.dd'
 $Path = "UserCheckReport-$Date.csv"
 
+if (Test-Path -Path .\$Path) {
+
+    Remove-Item -Path .\$Path
+}
+
+else {
+
+    Write-Output "Csv file $Path is generated. `n"
+}
+
 for ($i=0; $i -lt ($Computers | Measure-Object).Count; $i++) {
 
     $Username   = $Computers[$i].Account
