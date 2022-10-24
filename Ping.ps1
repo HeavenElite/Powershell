@@ -32,8 +32,8 @@ for ( $i = 0; $i -lt $Servers.Length; $i++)
         $Report.Result = $false
     }
     
-    [PSCustomObject]$Report | Select-Object -Property No,Site,Server,Service,Port,Result | Format-Table -AutoSize
-    [PSCustomObject]$Report | Select-Object -Property No,Site,Server,Service,Port,Result | Export-Csv -Path $Path -NoTypeInformation -Append
+    [PSCustomObject]$Report | Select-Object -Property Site,Server,Service,Port,Result | Format-Table -AutoSize
+    [PSCustomObject]$Report | Select-Object -Property Site,Server,Service,Port,Result | Export-Csv -Path $Path -NoTypeInformation -Append
 }
 
 Import-Csv -Path $Path | Sort-Object -Property Result,Site | Format-Table -AutoSize
