@@ -16,6 +16,7 @@ for ($i=0; $i -lt ($Computers | Measure-Object).Count; $i++) {
     catch {
         $Report = @{
 
+            Site = $Computers[$i].Site
             IPAddress = $Computers[$i].IP
             Account = 'Offline'
             Session = 'Offline'
@@ -23,8 +24,8 @@ for ($i=0; $i -lt ($Computers | Measure-Object).Count; $i++) {
             Suggestion = 'CheckHW'
         }
 
-        [PSCustomObject]$Report | Select-Object -Property 'IPAddress','Account','Session','Status','Suggestion' | Format-Table -AutoSize
-        [PSCustomObject]$Report | Select-Object -Property 'IPAddress','Account','Session','Status','Suggestion' | Export-Csv -Path $Path -Append -NoTypeInformation
+        [PSCustomObject]$Report | Select-Object -Property 'Site','IPAddress','Account','Session','Status','Suggestion' | Format-Table -AutoSize
+        [PSCustomObject]$Report | Select-Object -Property 'Site','IPAddress','Account','Session','Status','Suggestion' | Export-Csv -Path $Path -Append -NoTypeInformation
     
         $LoopContinue = $false
     }
@@ -42,8 +43,8 @@ for ($i=0; $i -lt ($Computers | Measure-Object).Count; $i++) {
                 Status = 'Idle' 
                 Suggestion = 'PleaseLogin'
             }
-            [PSCustomObject]$Report | Select-Object -Property 'IPAddress','Account','Session','Status','Suggestion' | Format-Table -AutoSize
-            [PSCustomObject]$Report | Select-Object -Property 'IPAddress','Account','Session','Status','Suggestion' | Export-Csv -Path $Path -Append -NoTypeInformation
+            [PSCustomObject]$Report | Select-Object -Property 'Site','IPAddress','Account','Session','Status','Suggestion' | Format-Table -AutoSize
+            [PSCustomObject]$Report | Select-Object -Property 'Site','IPAddress','Account','Session','Status','Suggestion' | Export-Csv -Path $Path -Append -NoTypeInformation
         }
 
         elseif (($Response | Measure-Object).Count -gt 1) {
@@ -58,8 +59,8 @@ for ($i=0; $i -lt ($Computers | Measure-Object).Count; $i++) {
                     Suggestion = 'ContactUser'
                 }
             
-            [PSCustomObject]$Report | Select-Object -Property 'IPAddress','Account','Session','Status','Suggestion' | Format-Table -AutoSize
-            [PSCustomObject]$Report | Select-Object -Property 'IPAddress','Account','Session','Status','Suggestion' | Export-Csv -Path $Path -Append -NoTypeInformation
+            [PSCustomObject]$Report | Select-Object -Property 'Site','IPAddress','Account','Session','Status','Suggestion' | Format-Table -AutoSize
+            [PSCustomObject]$Report | Select-Object -Property 'Site','IPAddress','Account','Session','Status','Suggestion' | Export-Csv -Path $Path -Append -NoTypeInformation
             }
         }
 
@@ -74,8 +75,8 @@ for ($i=0; $i -lt ($Computers | Measure-Object).Count; $i++) {
                 Suggestion = 'Abnormal'
             }
         
-            [PSCustomObject]$Report | Select-Object -Property 'IPAddress','Account','Session','Status','Suggestion' | Format-Table -AutoSize
-            [PSCustomObject]$Report | Select-Object -Property 'IPAddress','Account','Session','Status','Suggestion' | Export-Csv -Path $Path -Append -NoTypeInformation
+            [PSCustomObject]$Report | Select-Object -Property 'Site','IPAddress','Account','Session','Status','Suggestion' | Format-Table -AutoSize
+            [PSCustomObject]$Report | Select-Object -Property 'Site','IPAddress','Account','Session','Status','Suggestion' | Export-Csv -Path $Path -Append -NoTypeInformation
         }
     }
     }
