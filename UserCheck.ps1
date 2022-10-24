@@ -2,9 +2,10 @@
 $Date = Get-Date -Format 'yyyy.MM.dd'
 $Path = "UserCheckReport-$Date.csv"
 
-if (Test-Path -Path .\$Path) {
+if (Test-Path -Path ".\$Path") {
 
     Remove-Item -Path .\$Path
+    Write-Output "Previous file $Path is removed. `n"
 }
 
 else {
