@@ -9,7 +9,7 @@
 )
 
 try {
-    Get-ChildItem . | Where-Object {$_.Name -like '*Report*.csv'} | Move-Item -Destination .\Report\
+    Get-ChildItem . | Where-Object {$_.Name -like "$($Name)Report-$((Get-Date).AddDays($Current).ToString('yyyy.MM.dd')).csv"} | Move-Item -Destination .\Report\
 }
 catch{
     Write-Output "There are no reports required to be removed. `n"
