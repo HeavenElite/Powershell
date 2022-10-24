@@ -96,4 +96,6 @@ for ($i=0; $i -lt ($Computers | Measure-Object).Count; $i++) {
     }
 }
 
+Import-Csv -Path ".\$Path" | Sort-Object -Property Suggestion,Site | Format-Table -AutoSize
+
 [System.Console]::Beep(1000,1000)
