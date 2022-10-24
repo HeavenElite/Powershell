@@ -31,12 +31,13 @@ for ($i=0; $i -lt ($Computers | Measure-Object).Count; $i++) {
             IPAddress = $Computers[$i].IP
             Account = 'Offline'
             Session = 'Offline'
+            ID = 'Offline'
             Status = 'Offline' 
             Suggestion = 'CheckHW'
         }
 
-        [PSCustomObject]$Report | Select-Object -Property 'Site','IPAddress','Account','Session','Status','Suggestion' | Format-Table -AutoSize
-        [PSCustomObject]$Report | Select-Object -Property 'Site','IPAddress','Account','Session','Status','Suggestion' | Export-Csv -Path $Path -Append -NoTypeInformation
+        [PSCustomObject]$Report | Select-Object -Property 'Site','IPAddress','Account','Session','ID','Status','Suggestion' | Format-Table -AutoSize
+        [PSCustomObject]$Report | Select-Object -Property 'Site','IPAddress','Account','Session','ID','Status','Suggestion' | Export-Csv -Path $Path -Append -NoTypeInformation
     
         $LoopContinue = $false
     }
@@ -52,11 +53,12 @@ for ($i=0; $i -lt ($Computers | Measure-Object).Count; $i++) {
                 IPAddress = $Computers[$i].IP
                 Account = 'Idle'
                 Session = 'Idle'
+                ID = 'Idle'
                 Status = 'Idle' 
                 Suggestion = 'PleaseLogin'
             }
-            [PSCustomObject]$Report | Select-Object -Property 'Site','IPAddress','Account','Session','Status','Suggestion' | Format-Table -AutoSize
-            [PSCustomObject]$Report | Select-Object -Property 'Site','IPAddress','Account','Session','Status','Suggestion' | Export-Csv -Path $Path -Append -NoTypeInformation
+            [PSCustomObject]$Report | Select-Object -Property 'Site','IPAddress','Account','Session','ID','Status','Suggestion' | Format-Table -AutoSize
+            [PSCustomObject]$Report | Select-Object -Property 'Site','IPAddress','Account','Session','ID','Status','Suggestion' | Export-Csv -Path $Path -Append -NoTypeInformation
         }
 
         elseif (($Response | Measure-Object).Count -gt 1) {
@@ -68,12 +70,13 @@ for ($i=0; $i -lt ($Computers | Measure-Object).Count; $i++) {
                     IPAddress = $Computers[$i].IP
                     Account = $Response[$m].Split(' ')[2]
                     Session = $Response[$m].Split(' ')[1] -replace 'rdp-tcp#','RDP:' -replace 'console','Console'
+                    ID = $Response[$m].Split(' ')[3]
                     Status = $Response[$m].Split(' ')[4]
                     Suggestion = 'ContactUser'
                 }
             
-            [PSCustomObject]$Report | Select-Object -Property 'Site','IPAddress','Account','Session','Status','Suggestion' | Format-Table -AutoSize
-            [PSCustomObject]$Report | Select-Object -Property 'Site','IPAddress','Account','Session','Status','Suggestion' | Export-Csv -Path $Path -Append -NoTypeInformation
+            [PSCustomObject]$Report | Select-Object -Property 'Site','IPAddress','Account','Session','ID','Status','Suggestion' | Format-Table -AutoSize
+            [PSCustomObject]$Report | Select-Object -Property 'Site','IPAddress','Account','Session','ID','Status','Suggestion' | Export-Csv -Path $Path -Append -NoTypeInformation
             }
         }
 
@@ -85,12 +88,13 @@ for ($i=0; $i -lt ($Computers | Measure-Object).Count; $i++) {
                 IPAddress = $Computers[$i].IP
                 Account = 'Abnormal'
                 Session = 'Abnormal'
+                ID = 'Abnormal'
                 Status = 'Abnormal'
                 Suggestion = 'Abnormal'
             }
         
-            [PSCustomObject]$Report | Select-Object -Property 'Site','IPAddress','Account','Session','Status','Suggestion' | Format-Table -AutoSize
-            [PSCustomObject]$Report | Select-Object -Property 'Site','IPAddress','Account','Session','Status','Suggestion' | Export-Csv -Path $Path -Append -NoTypeInformation
+            [PSCustomObject]$Report | Select-Object -Property 'Site','IPAddress','Account','Session','ID','Status','Suggestion' | Format-Table -AutoSize
+            [PSCustomObject]$Report | Select-Object -Property 'Site','IPAddress','Account','Session','ID','Status','Suggestion' | Export-Csv -Path $Path -Append -NoTypeInformation
         }
     }
     }

@@ -307,11 +307,12 @@ function UserCheck {
             IPAddress = $IPAddress
             Account = '设备离线'
             Session = '设备离线'
+            ID = '设备离线'
             Status = '设备离线' 
             Suggestion = '检查硬件'
         }
 
-        [PSCustomObject]$Report | Select-Object -Property 'IPAddress','Account','Session','Status','Suggestion' | Format-Table -AutoSize
+        [PSCustomObject]$Report | Select-Object -Property 'IPAddress','Account','Session','ID','Status','Suggestion' | Format-Table -AutoSize
     }
     finally {
 
@@ -322,10 +323,11 @@ function UserCheck {
                 IPAddress = $IPAddress
                 Account = '空闲'
                 Session = '空闲'
+                ID = '空闲'
                 Status = '空闲' 
                 Suggestion = '登录远程桌面'
             }
-            [PSCustomObject]$Report | Select-Object -Property 'IPAddress','Account','Session','Status','Suggestion' | Format-Table -AutoSize 
+            [PSCustomObject]$Report | Select-Object -Property 'IPAddress','Account','Session','ID','Status','Suggestion' | Format-Table -AutoSize 
         }
 
         elseif (($Response | Measure-Object).Count -gt 1) {
@@ -336,11 +338,12 @@ function UserCheck {
                     IPAddress = $IPAddress
                     Account = $Response[$i].Split(' ')[2]
                     Session = $Response[$i].Split(' ')[1]
+                    ID = $Response[$i].Split(' ')[3]
                     Status = $Response[1].Split(' ')[4]
                     Suggestion = '联系登录用户'
                 }
             
-            [PSCustomObject]$Report | Select-Object -Property 'IPAddress','Account','Session','Status','Suggestion' | Format-Table -AutoSize
+            [PSCustomObject]$Report | Select-Object -Property 'IPAddress','Account','Session','ID','Status','Suggestion' | Format-Table -AutoSize
             }
         }
 
@@ -351,11 +354,12 @@ function UserCheck {
                 IPAddress = $IPAddress
                 Account = '执行异常'
                 Session = '执行异常'
+                ID = '执行异常'
                 Status = '执行异常'
                 Suggestion = '执行异常'
             }
         
-            [PSCustomObject]$Report | Select-Object -Property 'IPAddress','Account','Session','Status','Suggestion' | Format-Table -AutoSize
+            [PSCustomObject]$Report | Select-Object -Property 'IPAddress','Account','Session','ID','Status','Suggestion' | Format-Table -AutoSize
         }
     }
 }
@@ -374,8 +378,11 @@ function UserCheck {
 # SoftwareList
 # UserCheck
 
-$IPAddress  = '192.168.0.160'
+$IPAddress  = '192.168.1.60'
 $Username   = Import-Csv -Path .\ITLab\ITLabData.csv | Where-Object {$_.IP -eq "$IPAddress"} | Select-Object -ExpandProperty Account
 $Password   = ConvertTo-SecureString -AsPlainText -Force (Import-Csv -Path .\ITLab\ITLabData.csv | Where-Object {$_.IP -eq "$IPAddress"} | Select-Object -ExpandProperty Password)
 $Credential = New-Object System.Management.Automation.PSCredential -ArgumentList $Username,$Password
 
+UserCheck
+#$Response = Invoke-Command -ComputerName $IPAddress -Credential $Credential -ScriptBlock {quser.exe}
+#$Response
