@@ -3,7 +3,6 @@
 for ( $i = 0; $i -lt $Servers.Length; $i++)
 {   
     $Report = @{
-       No      =  $i + 1
        Site    =  $Servers[$i].Site
        Server  =  $Servers[$i].IP
        Service =  $Servers[$i].Protocal
