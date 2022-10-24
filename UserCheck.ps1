@@ -67,7 +67,7 @@ for ($i=0; $i -lt ($Computers | Measure-Object).Count; $i++) {
                     Site = $Computers[$i].Site
                     IPAddress = $Computers[$i].IP
                     Account = $Response[$m].Split(' ')[2]
-                    Session = $Response[$m].Split(' ')[1] -replace 'rdp-tcp#','RDP: ' -replace 'console','Console'
+                    Session = $Response[$m].Split(' ')[1] -replace 'rdp-tcp#','RDP:' -replace 'console','Console'
                     Status = $Response[$m].Split(' ')[4]
                     Suggestion = 'ContactUser'
                 }
