@@ -37,6 +37,7 @@ for ($i=0; $i -lt ($Computers | Measure-Object).Count; $i++) {
             
             $Report = @{
 
+                Site = $Computers[$i].Site
                 IPAddress = $Computers[$i].IP
                 Account = 'Idle'
                 Session = 'Idle'
@@ -52,6 +53,7 @@ for ($i=0; $i -lt ($Computers | Measure-Object).Count; $i++) {
             for ($m=1; $m -lt $Response.Length; $m++) {
                 $Report = @{
 
+                    Site = $Computers[$i].Site
                     IPAddress = $Computers[$i].IP
                     Account = $Response[$m].Split(' ')[2]
                     Session = $Response[$m].Split(' ')[1]
@@ -68,6 +70,7 @@ for ($i=0; $i -lt ($Computers | Measure-Object).Count; $i++) {
 
             $Report = @{
 
+                Site = $Computers[$i].Site
                 IPAddress = $Computers[$i].IP
                 Account = 'Abnormal'
                 Session = 'Abnormal'
