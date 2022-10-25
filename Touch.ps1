@@ -363,6 +363,17 @@ function UserCheck {
         }
     }
 }
+function Logoff {
+
+    param(
+
+        [Parameter(Mandatory)]
+        [Int32]$ID
+    )
+    
+    Invoke-Command -ComputerName $IPAddress -Credential $Credential -ScriptBlock {logoff.exe $($args[0])} -ArgumentList $ID
+}
+
 
 # FunctionList
 # Get-Storage
@@ -377,10 +388,10 @@ function UserCheck {
 # RDPRecord
 # SoftwareList
 # UserCheck
+# Logoff -ID
 
 $IPAddress  = '192.168.1.10'
 $Username   = Import-Csv -Path .\ITLab\ITLabData.csv | Where-Object {$_.IP -eq "$IPAddress"} | Select-Object -ExpandProperty Account
 $Password   = ConvertTo-SecureString -AsPlainText -Force (Import-Csv -Path .\ITLab\ITLabData.csv | Where-Object {$_.IP -eq "$IPAddress"} | Select-Object -ExpandProperty Password)
 $Credential = New-Object System.Management.Automation.PSCredential -ArgumentList $Username,$Password
 
-UserCheck
