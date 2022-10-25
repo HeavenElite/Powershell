@@ -20,3 +20,4 @@
 |17|SortCsv|按照某列对CSV重新排序|
 |18|Systeminfo|搜集虚机信息的脚本|
 |19|UserCheck|检查设备的登录状态|
+|20|Logoff|UserCheck完成后，登出所有的Active会话|
