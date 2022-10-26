@@ -373,7 +373,15 @@ function Logoff {
     
     Invoke-Command -ComputerName $IPAddress -Credential $Credential -ScriptBlock {logoff.exe $($args[0])} -ArgumentList $ID
 }
+function ResetPassword {
+    param (
+        [Parameter(Mandatory)]
+        [String]$Key
+    )
 
+    $NewPassword = ConvertTo-SecureString -AsPlainText -Force $Key
+    Invoke-Command -ComputerName $IPAddress -Credential $Credential -ScriptBlock {Set-LocalUser -Name $using:Username -Password $using:NewPassword}
+}
 
 # FunctionList
 # Get-Storage
