@@ -382,6 +382,29 @@ function ResetPassword {
     $NewPassword = ConvertTo-SecureString -AsPlainText -Force $Key
     Invoke-Command -ComputerName $IPAddress -Credential $Credential -ScriptBlock {Set-LocalUser -Name $using:Username -Password $using:NewPassword}
 }
+function EPSCheck {
+
+    Invoke-Command -ComputerName $IPAddress -Credential $Credential -FilePath .\EPSCheckRemoteScript.ps1
+}
+function LPEServerConfig {
+
+    Invoke-Command -ComputerName $IPAddress -Credential $Credential -ScriptBlock {Get-Content -Path "C:\Retalix\LPE\CPTCPServer.exe.config"} > .\Temporary.xml
+    (Select-Xml -Path .\Temporary.xml -XPath /configuration/SAFServer).Node.InnerXML > .\Config.xml
+
+    $Response = (Select-String -Path .\Config.xml -Pattern '("Chain.*[0-9]")|("Branch.*[0-9]")|("WebServiceUrl.*https.*")').Matches.Value
+    Remove-Item -Path .\Temporary.xml,.\Config.xml
+
+    $Report = @{
+        
+        IPAddress     = $IPAddress
+        Chain         = $Response[0].Split('"')[3]
+        Branch        = $Response[1].Split('"')[3]
+        WebServiceUrl = $Response[2].Split('"')[3]
+
+    }
+
+    $Report | Select-Object -Property IPAddress,Chain,Branch,WebServiceUrl | Format-Table -AutoSize
+}
 
 # FunctionList
 # Get-Storage
@@ -397,9 +420,12 @@ function ResetPassword {
 # SoftwareList
 # UserCheck
 # Logoff -ID
+# LPEServerConfig
+
 
 $IPAddress  = '192.168.1.10'
 $Username   = Import-Csv -Path .\ITLab\ITLabData.csv | Where-Object {$_.IP -eq "$IPAddress"} | Select-Object -ExpandProperty Account
 $Password   = ConvertTo-SecureString -AsPlainText -Force (Import-Csv -Path .\ITLab\ITLabData.csv | Where-Object {$_.IP -eq "$IPAddress"} | Select-Object -ExpandProperty Password)
 $Credential = New-Object System.Management.Automation.PSCredential -ArgumentList $Username,$Password
 
+LPEServerConfig
