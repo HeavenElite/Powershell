@@ -55,6 +55,6 @@ for ($i=0; $i -lt ($Computers | Measure-Object).Count; $i++) {
     }
 }
 
-Import-Csv -Path ".\ConfigLPECheckReport-$(Get-Date -Format 'yyyy.MM.dd').csv" | Select-Object -Property Site,Type,Environment,IPAddress,Chain,Branch,WebServiceUrl | Format-Table -AutoSize
+Import-Csv -Path ".\ConfigLPECheckReport-$(Get-Date -Format 'yyyy.MM.dd').csv" | Sort-Object -Property Environment,Site | Format-Table -AutoSize
 
 [System.Console]::Beep(1000,1000)
