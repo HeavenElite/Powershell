@@ -388,21 +388,17 @@ function EPSCheck {
 }
 function LPEServerConfig {
 
-    Invoke-Command -ComputerName $IPAddress -Credential $Credential -ScriptBlock {Get-Content -Path "C:\Retalix\LPE\CPTCPServer.exe.config"} > .\Temporary.xml
-    (Select-Xml -Path .\Temporary.xml -XPath /configuration/SAFServer).Node.InnerXML > .\Config.xml
-
-    $Response = (Select-String -Path .\Config.xml -Pattern '("Chain.*[0-9]")|("Branch.*[0-9]")|("WebServiceUrl.*https.*")').Matches.Value
-    Remove-Item -Path .\Temporary.xml,.\Config.xml
-
+    $Response = Invoke-Command -ComputerName $IPAddress -Credential $Credential -ScriptBlock {Get-Content -Path "C:\Retalix\LPE\CPTCPServer.exe.config"}
+    $Result   = ([xml]$Response).configuration.SAFServer.add | Where-Object {$_.key -eq 'Chain' -or $_.key -eq 'Branch' -or $_.key -eq 'WebServiceUrl'}
+    
     $Report = @{
-        
+            
         IPAddress     = $IPAddress
-        Chain         = $Response[0].Split('"')[3]
-        Branch        = $Response[1].Split('"')[3]
-        WebServiceUrl = $Response[2].Split('"')[3]
-
+        Chain         = $Result[0].value
+        Branch        = $Result[1].value
+        WebServiceUrl = $Result[2].value
     }
-
+    
     $Report | Select-Object -Property IPAddress,Chain,Branch,WebServiceUrl | Format-Table -AutoSize
 }
 
@@ -428,4 +424,3 @@ $Username   = Import-Csv -Path .\ITLab\ITLabData.csv | Where-Object {$_.IP -eq "
 $Password   = ConvertTo-SecureString -AsPlainText -Force (Import-Csv -Path .\ITLab\ITLabData.csv | Where-Object {$_.IP -eq "$IPAddress"} | Select-Object -ExpandProperty Password)
 $Credential = New-Object System.Management.Automation.PSCredential -ArgumentList $Username,$Password
 
-LPEServerConfig
