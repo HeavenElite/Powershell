@@ -21,9 +21,9 @@ for ($i=0; $i -lt ($Computers | Measure-Object).Count; $i++) {
             Type          = $Computers[$i].Type
             Environment   = $Computers[$i].Test
             IPAddress     = $Computers[$i].IP
-            Chain         = Offline
-            Branch        = Offline
-            WebServiceUrl = Offline
+            Chain         = 'Offline'
+            Branch        = 'Offline'
+            WebServiceUrl = 'Offline'
         }
         
         $Report | Select-Object -Property Site,Type,Environment,IPAddress,Chain,Branch,WebServiceUrl | Format-Table -AutoSize
@@ -35,7 +35,7 @@ for ($i=0; $i -lt ($Computers | Measure-Object).Count; $i++) {
     finally {
 
     if ($LoopContinue) {
-        
+
         $Result   = ([xml]$Response).configuration.SAFServer.add | Where-Object {$_.key -eq 'Chain' -or $_.key -eq 'Branch' -or $_.key -eq 'WebServiceUrl'}
         
         $Report = @{
