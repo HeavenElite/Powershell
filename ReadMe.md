@@ -21,3 +21,4 @@
 |18|Systeminfo|搜集虚机信息的脚本|
 |19|UserCheck|检查设备的登录状态|
 |20|Logoff|UserCheck完成后，登出所有的Active会话|
+|21|ConfigLEPCheck|批量导出所有服务器上某个应用的配置|
