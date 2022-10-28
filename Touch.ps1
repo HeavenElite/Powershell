@@ -386,7 +386,7 @@ function EPSCheck {
 
     Invoke-Command -ComputerName $IPAddress -Credential $Credential -FilePath .\EPSCheckRemoteScript.ps1
 }
-function LPEServerConfig {
+function ConfigLPECheck {
 
     $Response = Invoke-Command -ComputerName $IPAddress -Credential $Credential -ScriptBlock {Get-Content -Path "C:\Retalix\LPE\CPTCPServer.exe.config"}
     $Result   = ([xml]$Response).configuration.SAFServer.add | Where-Object {$_.key -eq 'Chain' -or $_.key -eq 'Branch' -or $_.key -eq 'WebServiceUrl'}
@@ -401,7 +401,7 @@ function LPEServerConfig {
     
     $Report | Select-Object -Property IPAddress,Chain,Branch,WebServiceUrl | Format-Table -AutoSize
 }
-function WinSCPConfig {
+function ConfigWinSCPCheck {
 
     $Response = Invoke-Command -ComputerName $IPAddress -Credential $Credential -ScriptBlock {Get-Content -Path "C:\WinSCP\Configuration_end.ini"}
     $Result   = ($Response | Select-String -Pattern '@\d+\.\d+\.\d+\.\d+').Matches.Value.Replace('@','')
@@ -423,6 +423,7 @@ function ConfigEPSCheck {
     $Response
 }
 
+
 # FunctionList
 # Get-Storage
 # Show-Backup
@@ -437,9 +438,9 @@ function ConfigEPSCheck {
 # SoftwareList
 # UserCheck
 # Logoff -ID
-# LPEServerConfig
-# WinSCPConfig
 # ConfigEPSCheck
+# ConfigLPECheck
+# ConfigWinSCPCheck
 
 
 $IPAddress   = '192.168.0.130'

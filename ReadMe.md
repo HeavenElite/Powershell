@@ -21,4 +21,6 @@
 |18|Systeminfo|搜集虚机信息的脚本|
 |19|UserCheck|检查设备的登录状态|
 |20|Logoff|UserCheck完成后，登出所有的Active会话|
-|21|ConfigLEPCheck|批量导出所有服务器上某个应用的配置|
+|21|ConfigLEPCheck|批量导出所有服务器上LEP的配置|
+|22|ConfigWinSCPCheck|批量导出所有服务器上WinSCP的配置|
+|23|ConfigEPSCheck|批量导出所有服务器上EPS的配置|
