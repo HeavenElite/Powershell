@@ -437,7 +437,7 @@ function WinSCPConfig {
 # WinSCPConfig
 
 
-$IPAddress   = '192.168.0.110'
+$IPAddress   = '192.168.0.21'
 $Computer    = Import-Csv -Path .\ITLab\ITLabData.csv | Where-Object {$_.IP -eq $IPAddress}
 
 $Environment = $Computer.Test
@@ -448,4 +448,6 @@ $Username    = $Computer.Account
 $Password    = ConvertTo-SecureString -AsPlainText -Force $Computer.Password
 $Credential  = New-Object System.Management.Automation.PSCredential -ArgumentList $Username,$Password
 
-Invoke-Command -ComputerName $IPAddress -Credential $Credential -FilePath .\ConfigEPSCheckRemoteScript.ps1 -ArgumentList $IPAddress
+#UserCheck
+$Response = Invoke-Command -ComputerName $IPAddress -Credential $Credential -FilePath .\ConfigEPSCheckRemoteScript.ps1 -ArgumentList $IPAddress,$Site
+$Response
