@@ -448,6 +448,4 @@ $Username    = $Computer.Account
 $Password    = ConvertTo-SecureString -AsPlainText -Force $Computer.Password
 $Credential  = New-Object System.Management.Automation.PSCredential -ArgumentList $Username,$Password
 
-
-$Response = Invoke-Command -ComputerName $IPAddress -Credential $Credential -FilePath .\ConfigEPSCheckRemoteScript.ps1 -ErrorAction Stop
-$Response | Select-Object -Property ForwardServerIP,ForwardServerPort,FuelServerIP,FuelServerPort,SiteID,RPOSPort | Format-Table -AutoSize
+Invoke-Command -ComputerName $IPAddress -Credential $Credential -FilePath .\ConfigEPSCheckRemoteScript.ps1 -ArgumentList $IPAddress
