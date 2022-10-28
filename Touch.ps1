@@ -437,7 +437,7 @@ function WinSCPConfig {
 # WinSCPConfig
 
 
-$IPAddress   = '192.168.0.130'
+$IPAddress   = '192.168.1.60'
 $Computer    = Import-Csv -Path .\ITLab\ITLabData.csv | Where-Object {$_.IP -eq $IPAddress}
 
 $Environment = $Computer.Test
@@ -449,4 +449,5 @@ $Password    = ConvertTo-SecureString -AsPlainText -Force $Computer.Password
 $Credential  = New-Object System.Management.Automation.PSCredential -ArgumentList $Username,$Password
 
 
-WinSCPConfig
+$Response = Invoke-Command -ComputerName $IPAddress -Credential $Credential -ScriptBlock {Get-Content -Path "C:\WinSCP\Configuration_end.ini"}
+$Response

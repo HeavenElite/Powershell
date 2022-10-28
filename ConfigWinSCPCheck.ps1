@@ -1,5 +1,5 @@
 $Computers = Import-Csv -Path .\ITLab\ITLabData.csv | Where-Object {$_.WinSCP -eq 'WinSCP'}
-$Path      = ".\ConfigWinSCPCheck-$(Get-Date -Format 'yyyy.MM.dd')"
+$Path      = ".\ConfigWinSCPCheck-$(Get-Date -Format 'yyyy.MM.dd').csv"
 
 for ($i=0; $i -lt ($Computers | Measure-Object).Count; $i++) {
 
@@ -23,11 +23,11 @@ for ($i=0; $i -lt ($Computers | Measure-Object).Count; $i++) {
             Environment = $Computers[$i].Test
             SiteID      = $Computers[$i].Site
             Type        = $Computers[$i].Type
-            SFTPServer  = "Offline"
+            SFTPServer  = "ConfigError Or Offline"
         }
     
         [PSCustomObject]$Report | Select-Object -Property IPAddress,Environment,SiteID,Type,SFTPServer | Format-Table -AutoSize
-        [PSCustomObject]$Report | Select-Object -Property IPAddress,Environment,SiteID,Type,SFTPServer | Export-Csv -Path $Path
+        [PSCustomObject]$Report | Select-Object -Property IPAddress,Environment,SiteID,Type,SFTPServer | Export-Csv -Path $Path -Append -NoTypeInformation
 
         $LoopContinue = $false
     }
@@ -46,7 +46,11 @@ for ($i=0; $i -lt ($Computers | Measure-Object).Count; $i++) {
         }
     
         [PSCustomObject]$Report | Select-Object -Property IPAddress,Environment,SiteID,Type,SFTPServer | Format-Table -AutoSize
-        [PSCustomObject]$Report | Select-Object -Property IPAddress,Environment,SiteID,Type,SFTPServer | Export-Csv -Path $Path
+        [PSCustomObject]$Report | Select-Object -Property IPAddress,Environment,SiteID,Type,SFTPServer | Export-Csv -Path $Path -Append -NoTypeInformation
     }
     }
 }
+
+Import-Csv -Path $Path | Sort-Object -Property Environment,SiteID | Format-Table -AutoSize
+
+[System.Console]::Beep(1000,1000)
