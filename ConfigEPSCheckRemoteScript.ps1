@@ -1,6 +1,5 @@
-﻿$IPAddress = $($args[0])
-$Site      = $($args[1])
-$File      = (Get-ChildItem -Path C:\Users\$env:USERNAME\AppData\Roaming\Shell\EPS\webapp\workspace\log\system\ | Select-Object -ExpandProperty FullName)[-10..-1]
+﻿$Site = $($args[0])
+$File = (Get-ChildItem -Path C:\Users\$env:USERNAME\AppData\Roaming\Shell\EPS\webapp\workspace\log\system\ | Select-Object -ExpandProperty FullName)[-10..-1]
 
 
 try {
@@ -28,21 +27,20 @@ catch {
 }
 
 
-try {
-    $RPOSPort      = ([String](Select-String -Path $File -Pattern '\[\d+.\d+.\d+.\d+:.*RmiConnectFactory.makeObject')[-1] | Select-String -Pattern ':[0-9]{5}]'  | Select-Object -ExpandProperty Matches | Select-Object -ExpandProperty Value).Replace(":","").Replace("]","")
-}
-catch {
-    $RPOSPort      = "Error"
-}
+# try {
+#     $RPOSPort      = ([String](Select-String -Path $File -Pattern '\[\d+.\d+.\d+.\d+:.*RmiConnectFactory.makeObject')[-1] | Select-String -Pattern ':[0-9]{5}]'  | Select-Object -ExpandProperty Matches | Select-Object -ExpandProperty Value).Replace(":","").Replace("]","")
+# }
+# catch {
+#     $RPOSPort      = "Error"
+# }
 
 
 [PSCustomObject]@{
 
-    IPAddress         = $IPAddress
     ForwardServerIP   = $ForwardServer.Split(':')[0]
     ForwardServerPort = $ForwardServer.Split(':')[1]
     FuelServerIP      = $FuelServer.Split(' ')[0]
     FuelServerPort    = $FuelServer.Split(' ')[1].Split(':')[1]
     SiteID            = $SiteID.Replace("'","")
-    RPOSPort          = $RPOSPort
+#   RPOSPort          = $RPOSPort
 }
