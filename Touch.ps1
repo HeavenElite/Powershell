@@ -401,7 +401,7 @@ function LPEServerConfig {
     
     $Report | Select-Object -Property IPAddress,Chain,Branch,WebServiceUrl | Format-Table -AutoSize
 }
-function WinSCPCheck {
+function WinSCPConfig {
 
     $Response = Invoke-Command -ComputerName $IPAddress -Credential $Credential -ScriptBlock {Get-Content -Path "C:\WinSCP\Configuration_end.ini"}
     $Result   = ($Response | Select-String -Pattern '@\d+\.\d+\.\d+\.\d+').Matches.Value.Replace('@','')
@@ -449,4 +449,4 @@ $Password    = ConvertTo-SecureString -AsPlainText -Force $Computer.Password
 $Credential  = New-Object System.Management.Automation.PSCredential -ArgumentList $Username,$Password
 
 
-WinSCPCheck
+WinSCPConfig
