@@ -417,7 +417,11 @@ function WinSCPConfig {
 
     [PSCustomObject]$Report | Select-Object -Property IPAddress,Environment,SiteID,Type,SFTPServer | Format-Table -AutoSize
 }
+function ConfigEPSCheck {
 
+    $Response = Invoke-Command -ComputerName $IPAddress -Credential $Credential -FilePath .\ConfigEPSCheckRemoteScript.ps1 -ArgumentList $Site
+    $Response
+}
 
 # FunctionList
 # Get-Storage
@@ -435,6 +439,7 @@ function WinSCPConfig {
 # Logoff -ID
 # LPEServerConfig
 # WinSCPConfig
+# ConfigEPSCheck
 
 
 $IPAddress   = '192.168.0.130'
@@ -448,6 +453,3 @@ $Username    = $Computer.Account
 $Password    = ConvertTo-SecureString -AsPlainText -Force $Computer.Password
 $Credential  = New-Object System.Management.Automation.PSCredential -ArgumentList $Username,$Password
 
-#UserCheck
-$Response = Invoke-Command -ComputerName $IPAddress -Credential $Credential -FilePath .\ConfigEPSCheckRemoteScript.ps1 -ArgumentList $IPAddress,$Site
-$Response
