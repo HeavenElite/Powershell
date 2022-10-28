@@ -1,8 +1,8 @@
 $File          = (Get-ChildItem -Path C:\Users\$env:USERNAME\AppData\Roaming\Shell\EPS\webapp\workspace\log\system\).FullName
-$ForwardServer = ([String](Select-String -Path $File[-1] -Pattern 'LBManager.getConnect')[0]).Split(' ')[1].Split('[')[1].Replace(']','')
-$FuelServer    = ([String](Select-String -Path $File[-1] -Pattern 'IP:.*EpsService.checkIPPort')[0]).Split(' ')[2,3]
+$ForwardServer = (Select-String -Path $File -Pattern '\[\d+.\d+.\d+.\d+:.*LBManager.getConnect')[-1]
+$FuelServer    = (Select-String -Path $File -Pattern 'IP:.*EpsService.checkIPPort')[-1]
 $SiteID        = (Select-String -Path $File -Pattern 'StoreID="\d+"').Matches.Value[-1]
-$RPOSPort      = ([String](Select-String -Path $File[-1] -Pattern 'RmiConnectFactory.makeObject')[0]).Split('[')[2].Split(':')[1].Replace(']','')
+$RPOSPort      = (Select-String -Path $File -Pattern '\[\d+.\d+.\d+.\d+:.*RmiConnectFactory.makeObject')[-2]
 
 [PSCustomObject]@{
 
