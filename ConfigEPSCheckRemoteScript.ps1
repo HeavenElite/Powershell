@@ -5,7 +5,7 @@ $File      = (Get-ChildItem -Path C:\Users\$env:USERNAME\AppData\Roaming\Shell\E
 
 try {
 
-    $ForwardServer = ((Select-String -Path $File -Pattern '\[\d+.\d+.\d+.\d+:.*LBManager.getConnect' | Select-String -Pattern '192' -NotMatch)[-1] | Select-String -Pattern '\d+.\d+.\d+.\d+:\d+').Matches.Value
+    $ForwardServer = [String](Select-String -Path $File -Pattern '\[\d+.\d+.\d+.\d+:.*LBManager.getConnect' | Select-String -Pattern '192' -NotMatch)[-1] | Select-String -Pattern '\d+.\d+.\d+.\d+:\d+' | Select-Object -ExpandProperty Matches | Select-Object -ExpandProperty Value
 
 }
 catch {
@@ -14,7 +14,7 @@ catch {
 
 
 try {
-    $FuelServer    = ((Select-String -Path $File -Pattern 'IP:.*EpsService.checkIPPort')[-1] | Select-String -Pattern '\d+.\d+.\d+.\d+ port:\d+').Matches.Value
+    $FuelServer    = [String](Select-String -Path $File -Pattern 'IP:.*EpsService.checkIPPort')[-1] | Select-String -Pattern '\d+.\d+.\d+.\d+ port:\d+' | Select-Object -ExpandProperty Matches | Select-Object -ExpandProperty Value
 }
 catch {
     $FuelServer    = "Error"
@@ -23,7 +23,7 @@ catch {
 
 try {
 
-    $SiteID = ((Select-String -Path $File -Pattern 'request:/d/dwr/loginService/epsInit.*\[DWRService.execute\]' | Select-String -Pattern "[^0-9]$Site[^0-9]")[-1] | Select-String "'[0-9]{4}'").Matches.Value
+    $SiteID = [String](Select-String -Path $File -Pattern 'request:/d/dwr/loginService/epsInit.*\[DWRService.execute\]')[-1] | Select-String -Pattern "[^0-9]$Site[^0-9]" | Select-Object -ExpandProperty Matches | Select-Object -ExpandProperty Value
 
 }
 catch {
@@ -32,7 +32,7 @@ catch {
 
 
 try {
-    $RPOSPort      = ((Select-String -Path $File -Pattern '\[\d+.\d+.\d+.\d+:.*RmiConnectFactory.makeObject')[-1] | Select-String -Pattern ':[0-9]{5}]').Matches.Value
+    $RPOSPort      = ([String](Select-String -Path $File -Pattern '\[\d+.\d+.\d+.\d+:.*RmiConnectFactory.makeObject')[-1] | Select-String -Pattern ':[0-9]{5}]'  | Select-Object -ExpandProperty Matches | Select-Object -ExpandProperty Value).Replace(":","")
 }
 catch {
     $RPOSPort      = "Error"
@@ -42,8 +42,10 @@ catch {
 [PSCustomObject]@{
 
     IPAddress         = $IPAddress
-    ForwardServerIP   = $ForwardServer
-    FuelServerIP      = $FuelServer
-    SiteID            = $SiteID
+    ForwardServerIP   = $ForwardServer.Split(':')[0]
+    ForwardServerPort = $ForwardServer.Split(':')[1]
+    FuelServerIP      = $FuelServer.Split(' port:')[0]
+    FuelServerPort    = $FuelServer.Split(' port:')[1]
+    SiteID            = $SiteID.Replace("'","")
     RPOSPort          = $RPOSPort
 }
