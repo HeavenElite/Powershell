@@ -11,10 +11,10 @@ for ($i=0; $i -lt ($Computers | Measure-Object).Count; $i++) {
 
     $Report = @{
 
-        IPAddress = $Computers[$i].IP
+        Environment = $Computers[$i].Test
         SiteID    = $Computers[$i].Site
         Type      = $Computers[$i].Type
-        Environment = $Computers[$i].Test
+        IPAddress = $Computers[$i].IP
         ForwardServerIP   = $Response.ForwardServerIP
         ForwardServerPort = $Response.ForwardServerPort
         FuelServerIP = $Response.FuelServerIP
