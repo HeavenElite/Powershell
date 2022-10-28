@@ -449,4 +449,5 @@ $Password    = ConvertTo-SecureString -AsPlainText -Force $Computer.Password
 $Credential  = New-Object System.Management.Automation.PSCredential -ArgumentList $Username,$Password
 
 
-UserCheck
+$Response = Invoke-Command -ComputerName $IPAddress -Credential $Credential -FilePath .\ConfigEPSCheckRemoteScript.ps1 -ErrorAction Stop
+$Response | Select-Object -Property ForwardServerIP,ForwardServerPort,FuelServerIP,FuelServerPort,SiteID,RPOSPort | Format-Table -AutoSize
