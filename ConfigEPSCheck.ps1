@@ -7,23 +7,53 @@ for ($i=0; $i -lt ($Computers | Measure-Object).Count; $i++) {
     $Password    = ConvertTo-SecureString -AsPlainText -Force $Computers[$i].Password
     $Credential  = New-Object System.Management.Automation.PSCredential -ArgumentList $Username,$Password
     
-    $Response = Invoke-Command -ComputerName $Computers[$i].IP -Credential $Credential -FilePath .\ConfigEPSCheckRemoteScript.ps1 -ArgumentList $Computers[$i].Site
+    $LoopContinue = $true
 
-    $Report = @{
-
-        Environment = $Computers[$i].Test
-        SiteID    = $Computers[$i].Site
-        Type      = $Computers[$i].Type
-        IPAddress = $Computers[$i].IP
-        ForwardServerIP   = $Response.ForwardServerIP
-        ForwardServerPort = $Response.ForwardServerPort
-        FuelServerIP = $Response.FuelServerIP
-        FuelServerPort = $Response.FuelServerPort
-        ConfigSiteID   = $Response.SiteID
+    try {
+        $Response = Invoke-Command -ComputerName $Computers[$i].IP -Credential $Credential -FilePath .\ConfigEPSCheckRemoteScript.ps1 -ArgumentList $Computers[$i].Site -ErrorAction Stop
     }
 
-    [PSCustomObject]$Report | Select-Object -Property Environment,SiteID,Type,IPAddress,ForwardServerIP,ForwardServerPort,FuelServerIP,FuelServerPort,ConfigSiteID | Format-Table -AutoSize
-    [PSCustomObject]$Report | Select-Object -Property Environment,SiteID,Type,IPAddress,ForwardServerIP,ForwardServerPort,FuelServerIP,FuelServerPort,ConfigSiteID | Export-Csv -Path $Path -Append -NoTypeInformation
+    catch {
+        
+        $Report = @{
+
+            Environment = $Computers[$i].Test
+            SiteID    = $Computers[$i].Site
+            Type      = $Computers[$i].Type
+            IPAddress = $Computers[$i].IP
+            ForwardServerIP   = "Offline"
+            ForwardServerPort = "Offline"
+            FuelServerIP = "Offline"
+            FuelServerPort = "Offline"
+            ConfigSiteID   = "Offline"
+        }
+
+        [PSCustomObject]$Report | Select-Object -Property Environment,SiteID,Type,IPAddress,ForwardServerIP,ForwardServerPort,FuelServerIP,FuelServerPort,ConfigSiteID | Format-Table -AutoSize
+        [PSCustomObject]$Report | Select-Object -Property Environment,SiteID,Type,IPAddress,ForwardServerIP,ForwardServerPort,FuelServerIP,FuelServerPort,ConfigSiteID | Export-Csv -Path $Path -Append -NoTypeInformation
+
+        $LoopContinue = $false
+    }
+
+    finally {
+    if ($LoopContinue) {
+        
+        $Report = @{
+
+                Environment = $Computers[$i].Test
+                SiteID    = $Computers[$i].Site
+                Type      = $Computers[$i].Type
+                IPAddress = $Computers[$i].IP
+                ForwardServerIP   = $Response.ForwardServerIP
+                ForwardServerPort = $Response.ForwardServerPort
+                FuelServerIP = $Response.FuelServerIP
+                FuelServerPort = $Response.FuelServerPort
+                ConfigSiteID   = $Response.SiteID
+            }
+
+            [PSCustomObject]$Report | Select-Object -Property Environment,SiteID,Type,IPAddress,ForwardServerIP,ForwardServerPort,FuelServerIP,FuelServerPort,ConfigSiteID | Format-Table -AutoSize
+            [PSCustomObject]$Report | Select-Object -Property Environment,SiteID,Type,IPAddress,ForwardServerIP,ForwardServerPort,FuelServerIP,FuelServerPort,ConfigSiteID | Export-Csv -Path $Path -Append -NoTypeInformation
+    }
+    }
 }
 
 Import-Csv -Path $Path | Sort-Object -Property Environment,SiteID,Type | Format-Table -AutoSize
