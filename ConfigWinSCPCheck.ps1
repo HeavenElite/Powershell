@@ -12,6 +12,7 @@ for ($i=0; $i -lt ($Computers | Measure-Object).Count; $i++) {
     try {
 
         $Response = Invoke-Command -ComputerName $Computers[$i].IP -Credential $Credential -ScriptBlock {Get-Content -Path "C:\WinSCP\Configuration_end.ini"} -ErrorAction Stop
+        $Result   = ($Response | Select-String -Pattern '@\d+\.\d+\.\d+\.\d+').Matches.Value.Replace('@','')
     }
 
     catch {
@@ -34,8 +35,6 @@ for ($i=0; $i -lt ($Computers | Measure-Object).Count; $i++) {
     finally {
 
     if ($LoopContinue) {
-
-        $Result   = ($Response | Select-String -Pattern '@\d+\.\d+\.\d+\.\d+').Matches.Value.Replace('@','')
 
         $Report = @{
     
