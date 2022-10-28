@@ -44,8 +44,8 @@ catch {
     IPAddress         = $IPAddress
     ForwardServerIP   = $ForwardServer.Split(':')[0]
     ForwardServerPort = $ForwardServer.Split(':')[1]
-    FuelServerIP      = $FuelServer.Split(' port:')[0]
-    FuelServerPort    = $FuelServer.Split(' port:')[1]
+    FuelServerIP      = $FuelServer.Split(' ')[0]
+    FuelServerPort    = $FuelServer.Split(' ')[1].Split(':')[1]
     SiteID            = $SiteID.Replace("'","")
     RPOSPort          = $RPOSPort
 }
