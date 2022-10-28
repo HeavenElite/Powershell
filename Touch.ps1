@@ -401,6 +401,23 @@ function LPEServerConfig {
     
     $Report | Select-Object -Property IPAddress,Chain,Branch,WebServiceUrl | Format-Table -AutoSize
 }
+function WinSCPCheck {
+
+    $Response = Invoke-Command -ComputerName $IPAddress -Credential $Credential -ScriptBlock {Get-Content -Path "C:\WinSCP\Configuration_end.ini"}
+    $Result   = ($Response | Select-String -Pattern '@\d+\.\d+\.\d+\.\d+').Matches.Value.Replace('@','')
+
+    $Report = @{
+
+        IPAddress   = $IPAddress
+        Environment = $Environment
+        SiteID      = $Site
+        Type        = $Type
+        SFTPServer  = $Result
+    }
+
+    [PSCustomObject]$Report | Select-Object -Property IPAddress,Environment,SiteID,Type,SFTPServer | Format-Table -AutoSize
+}
+
 
 # FunctionList
 # Get-Storage
@@ -417,10 +434,19 @@ function LPEServerConfig {
 # UserCheck
 # Logoff -ID
 # LPEServerConfig
+# WinSCPConfig
 
 
-$IPAddress  = '192.168.1.10'
-$Username   = Import-Csv -Path .\ITLab\ITLabData.csv | Where-Object {$_.IP -eq "$IPAddress"} | Select-Object -ExpandProperty Account
-$Password   = ConvertTo-SecureString -AsPlainText -Force (Import-Csv -Path .\ITLab\ITLabData.csv | Where-Object {$_.IP -eq "$IPAddress"} | Select-Object -ExpandProperty Password)
-$Credential = New-Object System.Management.Automation.PSCredential -ArgumentList $Username,$Password
+$IPAddress   = '192.168.0.130'
+$Computer    = Import-Csv -Path .\ITLab\ITLabData.csv | Where-Object {$_.IP -eq $IPAddress}
 
+$Environment = $Computer.Test
+$Site        = $Computer.Site
+$Type        = $Computer.Type
+
+$Username    = $Computer.Account
+$Password    = ConvertTo-SecureString -AsPlainText -Force $Computer.Password
+$Credential  = New-Object System.Management.Automation.PSCredential -ArgumentList $Username,$Password
+
+
+WinSCPCheck
