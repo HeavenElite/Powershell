@@ -6,7 +6,7 @@ try {
     $ForwardServer = [String](Select-String -Path $File -Pattern '\[\d+.\d+.\d+.\d+:.*LBManager.getConnect' | Select-String -Pattern '192' -NotMatch)[-1] | Select-String -Pattern '\d+.\d+.\d+.\d+:\d+' | Select-Object -ExpandProperty Matches | Select-Object -ExpandProperty Value
 }
 catch {
-    $ForwardServer = "Error"
+    $ForwardServer = "ManualCheck"
 }
 
 
@@ -14,7 +14,7 @@ try {
     $FuelServer    = [String](Select-String -Path $File -Pattern 'IP:.*EpsService.checkIPPort')[-1] | Select-String -Pattern '\d+.\d+.\d+.\d+ port:\d+' | Select-Object -ExpandProperty Matches | Select-Object -ExpandProperty Value
 }
 catch {
-    $FuelServer    = "Error"
+    $FuelServer    = "ManualCheck"
 }
 
 
@@ -23,7 +23,7 @@ try {
 
 }
 catch {
-    $SiteID        = "Error"
+    $SiteID        = "ManualCheck"
 }
 
 
@@ -31,7 +31,7 @@ catch {
 #     $RPOSPort      = ([String](Select-String -Path $File -Pattern '\[\d+.\d+.\d+.\d+:.*RmiConnectFactory.makeObject')[-1] | Select-String -Pattern ':[0-9]{5}]'  | Select-Object -ExpandProperty Matches | Select-Object -ExpandProperty Value).Replace(":","").Replace("]","")
 # }
 # catch {
-#     $RPOSPort      = "Error"
+#     $RPOSPort      = "ManualCheck"
 # }
 
 
