@@ -4,9 +4,7 @@ $File      = (Get-ChildItem -Path C:\Users\$env:USERNAME\AppData\Roaming\Shell\E
 
 
 try {
-
     $ForwardServer = [String](Select-String -Path $File -Pattern '\[\d+.\d+.\d+.\d+:.*LBManager.getConnect' | Select-String -Pattern '192' -NotMatch)[-1] | Select-String -Pattern '\d+.\d+.\d+.\d+:\d+' | Select-Object -ExpandProperty Matches | Select-Object -ExpandProperty Value
-
 }
 catch {
     $ForwardServer = "Error"
@@ -22,7 +20,6 @@ catch {
 
 
 try {
-
     $SiteID = [String](Select-String -Path $File -Pattern 'request:/d/dwr/loginService/epsInit.*\[DWRService.execute\]')[-1] | Select-String -Pattern "[^0-9]$Site[^0-9]" | Select-Object -ExpandProperty Matches | Select-Object -ExpandProperty Value
 
 }
