@@ -437,7 +437,7 @@ function WinSCPConfig {
 # WinSCPConfig
 
 
-$IPAddress   = '192.168.0.50'
+$IPAddress   = '192.168.0.130'
 $Computer    = Import-Csv -Path .\ITLab\ITLabData.csv | Where-Object {$_.IP -eq $IPAddress}
 
 $Environment = $Computer.Test
