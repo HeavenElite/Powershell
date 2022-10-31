@@ -17,5 +17,5 @@ for ($i=0; $i -lt ($ActiveComputers | Measure-Object).Count; $i++) {
     }
 
     $Report | Select-Object -Property IPAddress,Logoff | Format-Table -AutoSize
-    $Report | Select-Object -Property IPAddress,Logoff | Format-Table -AutoSize | Export-Csv -Path ".\LogoffReport-$(Get-Date -Format 'yyyy.MM.dd').csv" -Append -NoTypeInformation
+    $Report | Select-Object -Property IPAddress,Logoff | Export-Csv -Path ".\LogoffReport-$(Get-Date -Format 'yyyy.MM.dd').csv" -Append -NoTypeInformation
 }
