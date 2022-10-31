@@ -13,7 +13,7 @@ for ($i=0; $i -lt ($ActiveComputers | Measure-Object).Count; $i++) {
     $Report = @{
 
         IPAddress = $IPAddress
-        Logoff    = CommandSent
+        Logoff    = 'CommandSent'
     }
 
     $Report | Select-Object -Property IPAddress,Logoff | Format-Table -AutoSize
