@@ -38,7 +38,7 @@ for ($i=0; $i -lt $Count; $i++) {
             SiteID        = $Computers[$i].Site
             DeviceType    = $Computers[$i].Type
             IPAddress     = $Computers[$i].IP
-            Operation     = 'ComputerOffline'
+            Operation     = 'ResetCommandSent'
         }
         [PSCustomObject]$Report | Select-Object -Property Environment,SiteID,DeviceType,IPAddress,Operation | Format-Table -AutoSize
         [PSCustomObject]$Report | Select-Object -Property Environment,SiteID,DeviceType,IPAddress,Operation | Export-Csv -Path $Path -Append -NoTypeInformation
