@@ -1,5 +1,5 @@
 $Computers = Import-Csv -Path .\ITLab\ITLabData.csv | Where-Object {$_.WinSCP -eq 'WinSCP'}
-$Path      = ".\ConfigWinSCPCheck-$(Get-Date -Format 'yyyy.MM.dd').csv"
+$Path      = ".\ConfigWinSCPCheckReport-$(Get-Date -Format 'yyyy.MM.dd').csv"
 
 for ($i=0; $i -lt ($Computers | Measure-Object).Count; $i++) {
 
