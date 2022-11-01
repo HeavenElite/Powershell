@@ -10,11 +10,11 @@ for ( $i = 0; $i -lt ($Computers | Measure-Object).Count; $i++) {
     $Report = @{
 
         IPAddress = $IPAddress
-        Shutdown  = CommandSent
+        Shutdown  = 'CommandSent'
     }
 
     $Report | Select-Object -Property IPAddress,Shutdown | Format-Table -AutoSize
-    $Report | Select-Object -Property IPAddress,Shutdown | Format-Table -AutoSize | Export-Csv -Path ".\ShutdownReport-$(Get-Date -Format 'yyyy.MM.dd').csv"
+    $Report | Select-Object -Property IPAddress,Shutdown | Export-Csv -Path ".\ShutdownReport-$(Get-Date -Format 'yyyy.MM.dd').csv" -Append -NoTypeInformation
 }
 
 [System.Console]::Beep(1000,1000)
