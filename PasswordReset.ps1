@@ -11,7 +11,4 @@ for ($i=0; $i -lt $Count; $i++) {
 
 
     Invoke-Command -ComputerName $Computers[$i].IP -Credential $Credential -ScriptBlock {Set-LocalUser -Name $using:Username -Password $using:NewPassword}
-
-
-
 }
