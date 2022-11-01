@@ -445,7 +445,7 @@ function Workspace {
 # ConfigEPSCheck
 # ConfigLPECheck
 # ConfigWinSCPCheck
-
+# Invoke-Command -ComputerName $IPAddress -Credential $Credential -ScriptBlock {}
 
 $IPAddress   = '192.168.0.90'
 $Computer    = Import-Csv -Path .\ITLab\ITLabData.csv | Where-Object {$_.IP -eq $IPAddress}
