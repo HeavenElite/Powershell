@@ -1,8 +1,8 @@
 $Computers = Import-Csv -Path .\ITLab\ITLabDebug.csv
 $Count     = ($Computers | Measure-Object).Count
-
 $Path        = "PasswordResetReport-$(Get-Date -Format "yyyy.MM.dd").csv"
-$NewPassword = ConvertTo-SecureString -AsPlainText 'Laurence' -Force
+
+$NewPassword = 'Laurence'
 
 for ($i=0; $i -lt $Count; $i++) {
 
@@ -13,7 +13,7 @@ for ($i=0; $i -lt $Count; $i++) {
     $LoopContinue = $true
 
     try {
-        Invoke-Command -ComputerName $Computers[$i].IP -Credential $Credential -ScriptBlock {Set-LocalUser -Name $using:Username -Password $using:NewPassword} -ErrorAction Stop
+        Invoke-Command -ComputerName $Computers[$i].IP -Credential $Credential -ScriptBlock {net user $using:Username $using:NewPassword} -ErrorAction Stop
     }
 
     catch {
