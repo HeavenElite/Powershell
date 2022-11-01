@@ -1,4 +1,4 @@
-﻿function Get-Storage {
+﻿function GetStorage {
     [CmdletBinding()]
     $Result = Invoke-Command -ComputerName $IPAddress -Credential $Credential -ScriptBlock {Get-PSDrive -PSProvider FileSystem}
 
@@ -14,7 +14,7 @@
        $Result | Select-Object -Property PSComputerName,DeviceID,Size,FreeSpace | Where-Object {$_.FreeSpace -ne '0'} | Export-Csv -Path ".\PracVM-$(Get-Date -Format "dddd.HH.mm").csv" -Append -NoTypeInformation   
     }
 }
-function Show-Backup {
+function ShowBackup {
     [CmdletBinding()]
     $Result = Invoke-Command -ComputerName $IPAddress -Credential $Credential -ScriptBlock {wbadmin.exe get versions}
     $Result
@@ -422,11 +422,14 @@ function ConfigEPSCheck {
     $Response = Invoke-Command -ComputerName $IPAddress -Credential $Credential -FilePath .\ConfigEPSCheckRemoteScript.ps1 -ArgumentList $Site
     $Response
 }
+function Workspace {
 
+    Invoke-Command -ComputerName $IPAddress -Credential $Credential -ScriptBlock {Get-Content (Get-ChildItem -Path C:\Users\$env:USERNAME\AppData\Roaming\Shell\EPS\webapp\workspace\log\system\ | Select-Object -ExpandProperty FullName)[-2]}    
+}
 
 # FunctionList
-# Get-Storage
-# Show-Backup
+# GetStorage
+# ShowBackup
 # Shutdown
 # PSVersion
 # AutoStart
@@ -444,7 +447,7 @@ function ConfigEPSCheck {
 # ConfigWinSCPCheck
 
 
-$IPAddress   = '192.168.0.141'
+$IPAddress   = '192.168.0.90'
 $Computer    = Import-Csv -Path .\ITLab\ITLabData.csv | Where-Object {$_.IP -eq $IPAddress}
 
 $Environment = $Computer.Test
@@ -455,3 +458,8 @@ $Username    = $Computer.Account
 $Password    = ConvertTo-SecureString -AsPlainText -Force $Computer.Password
 $Credential  = New-Object System.Management.Automation.PSCredential -ArgumentList $Username,$Password
 
+
+# Invoke-Command -ComputerName $IPAddress -Credential $Credential -ScriptBlock {nslookup.exe}
+
+# Invoke-Command -ComputerName $IPAddress -Credential $Credential -ScriptBlock {nslookup.exe}
+ Invoke-Command -ComputerName $IPAddress -Credential $Credential -ScriptBlock {nslookup.exe uat-loy-web-internal.shell.com.cn}
