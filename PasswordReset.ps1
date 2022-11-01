@@ -1,6 +1,6 @@
 $Computers = Import-Csv -Path .\ITLab\ITLabDebug.csv
 $Count     = ($Computers | Measure-Object).Count
-$Path        = "PasswordResetReport-$(Get-Date -Format "yyyy.MM.dd").csv"
+$Path        = ".\PasswordResetReport-$(Get-Date -Format "yyyy.MM.dd").csv"
 
 $NewPassword = 'Laurence'
 
