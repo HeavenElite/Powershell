@@ -426,7 +426,10 @@ function Workspace {
 
     Invoke-Command -ComputerName $IPAddress -Credential $Credential -ScriptBlock {Get-Content (Get-ChildItem -Path C:\Users\$env:USERNAME\AppData\Roaming\Shell\EPS\webapp\workspace\log\system\ | Select-Object -ExpandProperty FullName)[-2]}    
 }
+function EPSLogExport {
 
+    Invoke-Command -ComputerName $IPAddress -Credential $Credential -ScriptBlock {Get-Content -Path (Get-ChildItem -Path C:\Users\$env:UserName\AppData\Roaming\Shell\EPS\webapp\workspace\log\system\ | Select-Object -ExpandProperty FullName)[-1]} >> ".\smice.$IPAddress.$(Get-Date -Format 'yyyy-MM-dd').log" 
+}
 # FunctionList
 # GetStorage
 # ShowBackup
@@ -445,9 +448,10 @@ function Workspace {
 # ConfigEPSCheck
 # ConfigLPECheck
 # ConfigWinSCPCheck
+# EPSLogExport
 # Invoke-Command -ComputerName $IPAddress -Credential $Credential -ScriptBlock {}
 
-$IPAddress   = '192.168.0.32'
+$IPAddress   = '192.168.0.92'
 $Computer    = Import-Csv -Path .\ITLab\ITLabData.csv | Where-Object {$_.IP -eq $IPAddress}
 
 $Environment = $Computer.Test
@@ -458,4 +462,4 @@ $Username    = $Computer.Account
 $Password    = ConvertTo-SecureString -AsPlainText -Force $Computer.Password
 $Credential  = New-Object System.Management.Automation.PSCredential -ArgumentList $Username,$Password
 
-RDPRecord
+UserCheck
