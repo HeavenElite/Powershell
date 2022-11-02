@@ -38,12 +38,12 @@ for ($i=0; $i -lt ($Computers | Measure-Object).Count; $i++) {
         
             $Report = @{
         
-                User      = ($Data[$m].Message | Select-String -Pattern '地址:.*').Matches.Value -replace '地址: ',''
+                User      = ($Data[$m].Message | Select-String -Pattern '[0-9]+.*').Matches.Value
                 Device    = $Computers[$i].IP
-                Account   = ($Data[$m].Message | Select-String -Pattern '用户: .*').Matches.Value -replace '用户: ','' -replace "`r",''
-                Domain    = ($Data[$m].Message | Select-String -Pattern '域: .*').Matches.Value -replace '域: ','' -replace "`r",''
+                Account   = ($Data[$m].Message | Select-String -Pattern '用户: .*|User: .*').Matches.Value -replace '用户: ','' -replace 'User: ','' -replace "`r",''
+                Domain    = ($Data[$m].Message | Select-String -Pattern '域: .*|Domain: .*').Matches.Value -replace '域: ','' -replace 'Domain: ','' -replace "`r",''
                 LoginTime = $Data[$m].TimeCreated
-        
+                
             }
             [PSCustomObject]$Report | Select-Object -Property User,Device,Account,Domain,LoginTime | Format-Table -AutoSize
             [PSCustomObject]$Report | Select-Object -Property User,Device,Account,Domain,LoginTime | Export-Csv -Path $Path -Append -NoTypeInformation

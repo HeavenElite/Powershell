@@ -112,10 +112,10 @@ function RDPRecord {
     
         $Report = @{
     
-            User      = ($Data[$m].Message | Select-String -Pattern '地址:.*').Matches.Value -replace '地址: ',''
+            User      = ($Data[$m].Message | Select-String -Pattern '[0-9]+.*').Matches.Value
             Device    = $IPAddress
-            Account   = ($Data[$m].Message | Select-String -Pattern '用户: .*').Matches.Value -replace '用户: ','' -replace "`r",''
-            Domain    = ($Data[$m].Message | Select-String -Pattern '域: .*').Matches.Value -replace '域: ','' -replace "`r",''
+            Account   = ($Data[$m].Message | Select-String -Pattern '用户: .*|User: .*').Matches.Value -replace '用户: ','' -replace 'User: ','' -replace "`r",''
+            Domain    = ($Data[$m].Message | Select-String -Pattern '域: .*|Domain: .*').Matches.Value -replace '域: ','' -replace 'Domain: ','' -replace "`r",''
             LoginTime = $Data[$m].TimeCreated
     
         }
@@ -447,7 +447,7 @@ function Workspace {
 # ConfigWinSCPCheck
 # Invoke-Command -ComputerName $IPAddress -Credential $Credential -ScriptBlock {}
 
-$IPAddress   = '192.168.0.90'
+$IPAddress   = '192.168.0.92'
 $Computer    = Import-Csv -Path .\ITLab\ITLabData.csv | Where-Object {$_.IP -eq $IPAddress}
 
 $Environment = $Computer.Test
@@ -458,3 +458,4 @@ $Username    = $Computer.Account
 $Password    = ConvertTo-SecureString -AsPlainText -Force $Computer.Password
 $Credential  = New-Object System.Management.Automation.PSCredential -ArgumentList $Username,$Password
 
+UserCheck
