@@ -422,14 +422,37 @@ function ConfigEPSCheck {
     $Response = Invoke-Command -ComputerName $IPAddress -Credential $Credential -FilePath .\ConfigEPSCheckRemoteScript.ps1 -ArgumentList $Site
     $Response
 }
-function Workspace {
+function LogFolder {
 
-    Invoke-Command -ComputerName $IPAddress -Credential $Credential -ScriptBlock {Get-Content (Get-ChildItem -Path C:\Users\$env:USERNAME\AppData\Roaming\Shell\EPS\webapp\workspace\log\system\ | Select-Object -ExpandProperty FullName)[-2]}    
+    Invoke-Command -ComputerName $IPAddress -Credential $Credential -ScriptBlock {Get-ChildItem -Path C:\Users\$env:USERNAME\AppData\Roaming\Shell\EPS\webapp\workspace\log\system\ | Select-Object -ExpandProperty FullName}    
 }
-function EPSLogExport {
+function LogUpload {
+    param (
+        [Parameter(Mandatory)]
+        [Int32]$Index
+    )
+    $File = Invoke-Command -ComputerName $IPAddress -Credential $Credential -FilePath .\FTPUploadRemoteScript.ps1 -ArgumentList $Index
 
-    Invoke-Command -ComputerName $IPAddress -Credential $Credential -ScriptBlock {Get-Content -Path (Get-ChildItem -Path C:\Users\$env:UserName\AppData\Roaming\Shell\EPS\webapp\workspace\log\system\ | Select-Object -ExpandProperty FullName)[-1]} >> ".\smice.$IPAddress.$(Get-Date -Format 'yyyy-MM-dd').log" 
+    $IPAddress   = '192.168.0.141'
+    $Computer    = Import-Csv -Path .\ITLab\ITLabData.csv | Where-Object {$_.IP -eq $IPAddress}
+
+    $Username    = $Computer.Account
+    $Password    = ConvertTo-SecureString -AsPlainText -Force $Computer.Password
+    $Credential  = New-Object System.Management.Automation.PSCredential -ArgumentList $Username,$Password
+
+    $Report = Invoke-Command -ComputerName $IPAddress -Credential $Credential -ScriptBlock {Test-Path -Path "C:\LogServer\$using:File"}
+
+    if ($Report) {
+
+        Write-Output "`n $File has been uploaded to FTP:\\192.168.0.141\. `n"
+    }
+
+    else {
+
+        Write-Output "`n $File is failed to upload. `n"
+    }
 }
+
 # FunctionList
 # GetStorage
 # ShowBackup
@@ -448,10 +471,12 @@ function EPSLogExport {
 # ConfigEPSCheck
 # ConfigLPECheck
 # ConfigWinSCPCheck
-# EPSLogExport
+# LogFolder
+# LogUpload -Index
 # Invoke-Command -ComputerName $IPAddress -Credential $Credential -ScriptBlock {}
 
-$IPAddress   = '192.168.0.92'
+
+$IPAddress   = '192.168.1.131'
 $Computer    = Import-Csv -Path .\ITLab\ITLabData.csv | Where-Object {$_.IP -eq $IPAddress}
 
 $Environment = $Computer.Test
@@ -462,4 +487,4 @@ $Username    = $Computer.Account
 $Password    = ConvertTo-SecureString -AsPlainText -Force $Computer.Password
 $Credential  = New-Object System.Management.Automation.PSCredential -ArgumentList $Username,$Password
 
-UserCheck
+EPSLogUpload -Index -6
