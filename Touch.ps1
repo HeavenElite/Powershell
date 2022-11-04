@@ -452,6 +452,17 @@ function LogUpload {
         Write-Output "`n $File is failed to upload. `n"
     }
 }
+function VMCheck {
+
+    $Result =  Invoke-Command -ComputerName $IPAddress -Credential $Credential -ScriptBlock {systeminfo | Select-String 'Virtual'}
+    $Report = @{
+        Computer = $IPAddress
+        Result   = $Result
+    }
+
+    [PSCustomObject]$Report | Select-Object -Property Computer,Result | Format-Table -AutoSize
+}
+
 
 # FunctionList
 # GetStorage
@@ -473,10 +484,11 @@ function LogUpload {
 # ConfigWinSCPCheck
 # LogFolder
 # LogUpload -Index
+# VMCheck
 # Invoke-Command -ComputerName $IPAddress -Credential $Credential -ScriptBlock {}
 
 
-$IPAddress   = '192.168.1.131'
+$IPAddress   = '192.168.0.130'
 $Computer    = Import-Csv -Path .\ITLab\ITLabData.csv | Where-Object {$_.IP -eq $IPAddress}
 
 $Environment = $Computer.Test
@@ -487,4 +499,3 @@ $Username    = $Computer.Account
 $Password    = ConvertTo-SecureString -AsPlainText -Force $Computer.Password
 $Credential  = New-Object System.Management.Automation.PSCredential -ArgumentList $Username,$Password
 
-RDPRecord
