@@ -1,4 +1,5 @@
-﻿$Computers = Import-Csv .\ITLab\ITLabData.csv | Where-Object {$_.IP -like '192.168.1.132' -or $_.IP -like '192.168.0.32' -or $_.IP -like '192.168.1.62' -or $_.IP -like '192.168.0.92' -or $_.IP -like '192.168.0.52'}
+﻿$Computers = Import-Csv .\ITLab\ITLabData.csv
+# | Where-Object {$_.IP -like '192.168.1.132' -or $_.IP -like '192.168.0.32' -or $_.IP -like '192.168.1.62' -or $_.IP -like '192.168.0.92' -or $_.IP -like '192.168.0.52'}
 $Date = Get-Date -Format 'yyyy.MM.dd'
 $Path = "UserCheckReport-$Date.csv"
 

@@ -431,7 +431,7 @@ function LogUpload {
         [Parameter(Mandatory)]
         [Int32]$Index
     )
-    $File = Invoke-Command -ComputerName $IPAddress -Credential $Credential -FilePath .\FTPUploadRemoteScript.ps1 -ArgumentList $Index
+    $File = Invoke-Command -ComputerName $IPAddress -Credential $Credential -FilePath .\EPSUploadRemoteScript.ps1 -ArgumentList $Index,$Computer.Site,$IPAddress
 
     $IPAddress   = '192.168.0.141'
     $Computer    = Import-Csv -Path .\ITLab\ITLabData.csv | Where-Object {$_.IP -eq $IPAddress}
@@ -488,7 +488,7 @@ function VMCheck {
 # Invoke-Command -ComputerName $IPAddress -Credential $Credential -ScriptBlock {}
 
 
-$IPAddress   = '192.168.0.130'
+$IPAddress   = '192.168.0.31'
 $Computer    = Import-Csv -Path .\ITLab\ITLabData.csv | Where-Object {$_.IP -eq $IPAddress}
 
 $Environment = $Computer.Test
