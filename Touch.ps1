@@ -488,7 +488,7 @@ function VMCheck {
 # Invoke-Command -ComputerName $IPAddress -Credential $Credential -ScriptBlock {}
 
 
-$IPAddress   = '192.168.0.31'
+$IPAddress   = '192.168.1.131'
 $Computer    = Import-Csv -Path .\ITLab\ITLabData.csv | Where-Object {$_.IP -eq $IPAddress}
 
 $Environment = $Computer.Test
@@ -498,4 +498,5 @@ $Type        = $Computer.Type
 $Username    = $Computer.Account
 $Password    = ConvertTo-SecureString -AsPlainText -Force $Computer.Password
 $Credential  = New-Object System.Management.Automation.PSCredential -ArgumentList $Username,$Password
+
 
