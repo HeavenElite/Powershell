@@ -509,4 +509,4 @@ $Credential  = New-Object System.Management.Automation.PSCredential -ArgumentLis
 #   $Result =  Invoke-Command -ComputerName $IPAddress -Credential $Credential -ScriptBlock {Get-Date -Format "yyyy.MM.dd-HH:mm"}
 #   $Result =  Invoke-Command -ComputerName $IPAddress -Credential $Credential -ScriptBlock {Get-Service W32time | Select-Object -ExpandProperty Status}
 
-UserCheck
+#   $Result
