@@ -500,13 +500,13 @@ $Password    = ConvertTo-SecureString -AsPlainText -Force $Computer.Password
 $Credential  = New-Object System.Management.Automation.PSCredential -ArgumentList $Username,$Password
 
 
-#   $Result =  Invoke-Command -ComputerName $IPAddress -Credential $Credential -ScriptBlock {}
+#   $Result =  Invoke-Command -ComputerName $IPAddress -Credential $Credential -ScriptBlock {w32tm /config /manualpeerlist:"ntp.ntsc.ac.cn time.windows.com" /syncfromflags:manual /update}
 #   $Result =  Invoke-Command -ComputerName $IPAddress -Credential $Credential -ScriptBlock {w32tm /query /source}
 #   $Result =  Invoke-Command -ComputerName $IPAddress -Credential $Credential -ScriptBlock {W32tm /resync /force}
 #   $Result =  Invoke-Command -ComputerName $IPAddress -Credential $Credential -ScriptBlock {Start-Service W32time}
 #   $Result =  Invoke-Command -ComputerName $IPAddress -Credential $Credential -ScriptBlock {sc.exe config W32time start= auto}
 #   $Result =  Invoke-Command -ComputerName $IPAddress -Credential $Credential -ScriptBlock {(sc.exe qc w32time | Select-String -Pattern 'START_TYPE.*' | Select-Object -ExpandProperty Matches | Select-Object -ExpandProperty Value).Split(':')[1]}
-    $Result =  Invoke-Command -ComputerName $IPAddress -Credential $Credential -ScriptBlock {Get-Date -Format "yyyy.MM.dd-HH:mm"}
+#   $Result =  Invoke-Command -ComputerName $IPAddress -Credential $Credential -ScriptBlock {Get-Date -Format "yyyy.MM.dd-HH:mm"}
 #   $Result =  Invoke-Command -ComputerName $IPAddress -Credential $Credential -ScriptBlock {Get-Service W32time | Select-Object -ExpandProperty Status}
 
 UserCheck
