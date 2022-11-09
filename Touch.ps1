@@ -488,7 +488,7 @@ function VMCheck {
 # Invoke-Command -ComputerName $IPAddress -Credential $Credential -ScriptBlock {}
 
 
-$IPAddress   = '192.168.0.52'
+$IPAddress   = '192.168.1.61'
 $Computer    = Import-Csv -Path .\ITLab\ITLabData.csv | Where-Object {$_.IP -eq $IPAddress}
 
 $Environment = $Computer.Test
@@ -500,5 +500,13 @@ $Password    = ConvertTo-SecureString -AsPlainText -Force $Computer.Password
 $Credential  = New-Object System.Management.Automation.PSCredential -ArgumentList $Username,$Password
 
 
-Ping -Port 3389 | gm
-#W32tm /resync /force
+#   $Result =  Invoke-Command -ComputerName $IPAddress -Credential $Credential -ScriptBlock {}
+#   $Result =  Invoke-Command -ComputerName $IPAddress -Credential $Credential -ScriptBlock {w32tm /query /source}
+#   $Result =  Invoke-Command -ComputerName $IPAddress -Credential $Credential -ScriptBlock {W32tm /resync /force}
+#   $Result =  Invoke-Command -ComputerName $IPAddress -Credential $Credential -ScriptBlock {Start-Service W32time}
+#   $Result =  Invoke-Command -ComputerName $IPAddress -Credential $Credential -ScriptBlock {sc.exe config W32time start= auto}
+#   $Result =  Invoke-Command -ComputerName $IPAddress -Credential $Credential -ScriptBlock {(sc.exe qc w32time | Select-String -Pattern 'START_TYPE.*' | Select-Object -ExpandProperty Matches | Select-Object -ExpandProperty Value).Split(':')[1]}
+    $Result =  Invoke-Command -ComputerName $IPAddress -Credential $Credential -ScriptBlock {Get-Date -Format "yyyy.MM.dd-HH:mm"}
+#   $Result =  Invoke-Command -ComputerName $IPAddress -Credential $Credential -ScriptBlock {Get-Service W32time | Select-Object -ExpandProperty Status}
+
+UserCheck
