@@ -501,7 +501,7 @@ function VMCheck {
 # Invoke-Command -ComputerName $IPAddress -Credential $Credential -ScriptBlock {}
 
 
-$IPAddress   = '192.168.1.60'
+$IPAddress   = '192.168.0.141'
 $Computer    = Import-Csv -Path .\ITLab\ITLabData.csv | Where-Object {$_.IP -eq $IPAddress}
 
 $Environment = $Computer.Test
