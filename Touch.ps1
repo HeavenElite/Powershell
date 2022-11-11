@@ -497,7 +497,7 @@ function VMCheck {
 # ConfigWinSCPCheck
 # LogFolder
 # LogUpload -Index
-# VMCheck
+# VirtualMachineCheck
 # Invoke-Command -ComputerName $IPAddress -Credential $Credential -ScriptBlock {}
 
 
