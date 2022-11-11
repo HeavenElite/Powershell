@@ -6,15 +6,15 @@ for ( $i = 0; $i -lt ($Computers | Measure-Object).Count; $i++) {
     $Credential = New-Object System.Management.Automation.PSCredential -ArgumentList $Username,$Password
 
     
-#   $Result =  Invoke-Command -ComputerName $Computers[$i].IP -Credential $Credential -ScriptBlock {w32tm /config /manualpeerlist:"ntp.ntsc.ac.cn time.windows.com" /syncfromflags:manual /update} -ErrorAction Ignore
-#   $Result =  Invoke-Command -ComputerName $Computers[$i].IP -Credential $Credential -ScriptBlock {w32tm /query /source} -ErrorAction Ignore
-#   $Result =  Invoke-Command -ComputerName $Computers[$i].IP -Credential $Credential -ScriptBlock {W32tm /resync /force} -ErrorAction Ignore
-#   $Result =  Invoke-Command -ComputerName $Computers[$i].IP -Credential $Credential -ScriptBlock {W32tm /register} -ErrorAction Ignore
-#   $Result =  Invoke-Command -ComputerName $Computers[$i].IP -Credential $Credential -ScriptBlock {Start-Service W32time} -ErrorAction Ignore
-#   $Result =  Invoke-Command -ComputerName $Computers[$i].IP -Credential $Credential -ScriptBlock {sc.exe config W32time start= auto} -ErrorAction Ignore
-#   $Result =  Invoke-Command -ComputerName $Computers[$i].IP -Credential $Credential -ScriptBlock {(sc.exe qc w32time | Select-String -Pattern 'START_TYPE.*' | Select-Object -ExpandProperty Matches | Select-Object -ExpandProperty Value).Split(':')[1]} -ErrorAction Ignore
-    $Result =  Invoke-Command -ComputerName $Computers[$i].IP -Credential $Credential -ScriptBlock {Get-Date -Format "yyyy.MM.dd-HH:mm"} -ErrorAction Ignore
-#   $Result =  Invoke-Command -ComputerName $Computers[$i].IP -Credential $Credential -ScriptBlock {Get-Service W32time | Select-Object -ExpandProperty Status} -ErrorAction Ignore
+#   $Result = Invoke-Command -ComputerName $Computers[$i].IP -Credential $Credential -ScriptBlock {w32tm /config /manualpeerlist:"ntp.ntsc.ac.cn time.windows.com" /syncfromflags:manual /update} -ErrorAction Ignore
+#   $Result = Invoke-Command -ComputerName $Computers[$i].IP -Credential $Credential -ScriptBlock {w32tm /query /source} -ErrorAction Ignore
+#   $Result = Invoke-Command -ComputerName $Computers[$i].IP -Credential $Credential -ScriptBlock {W32tm /resync /force} -ErrorAction Ignore
+#   $Result = Invoke-Command -ComputerName $Computers[$i].IP -Credential $Credential -ScriptBlock {W32tm /register} -ErrorAction Ignore
+#   $Result = Invoke-Command -ComputerName $Computers[$i].IP -Credential $Credential -ScriptBlock {Start-Service W32time} -ErrorAction Ignore
+#   $Result = Invoke-Command -ComputerName $Computers[$i].IP -Credential $Credential -ScriptBlock {sc.exe config W32time start= auto} -ErrorAction Ignore
+#   $Result = Invoke-Command -ComputerName $Computers[$i].IP -Credential $Credential -ScriptBlock {(sc.exe qc w32time | Select-String -Pattern 'START_TYPE.*' | Select-Object -ExpandProperty Matches | Select-Object -ExpandProperty Value).Split(':')[1]} -ErrorAction Ignore
+    $Result = Invoke-Command -ComputerName $Computers[$i].IP -Credential $Credential -ScriptBlock {Get-Date -Format "yyyy.MM.dd-HH:mm"} -ErrorAction Ignore
+#   $Result = Invoke-Command -ComputerName $Computers[$i].IP -Credential $Credential -ScriptBlock {Get-Service W32time | Select-Object -ExpandProperty Status} -ErrorAction Ignore
 
     $Report = @{
         Computer =  $Computers[$i].IP
