@@ -110,6 +110,6 @@ for ($i=0; $i -lt ($Computers | Measure-Object).Count; $i++) {
     }
 }
 
-Import-Csv -Path ".\$Path" | Sort-Object -Property Environment,Site | Format-Table -AutoSize
+Import-Csv -Path ".\$Path" | Sort-Object -Property Site,Environment,DeviceType,Suggestion | Format-Table -AutoSize
 
 [System.Console]::Beep(1000,1000)
